@@ -39,7 +39,6 @@ public class JwtService {
                 .getBody()
                 .getSubject();
     }
-
     public boolean isValid(String token, UserDetails userDetails) {
         String email = extractEmail(token);
         Date expDate = Jwts.parserBuilder()
