@@ -17,7 +17,6 @@ public class JwtService {
 
     @Value("${jwt.expiration}")
     private long expiration;
-
     private Key getKey() {
         return Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
     }
