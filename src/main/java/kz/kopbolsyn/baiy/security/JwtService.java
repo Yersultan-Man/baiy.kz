@@ -20,7 +20,6 @@ public class JwtService {
     private Key getKey() {
         return Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
     }
-
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
