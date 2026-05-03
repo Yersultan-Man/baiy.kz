@@ -14,16 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
-
     public AuthResponse register(RegisterRequest req) {
         if (userRepository.existsByEmail(req.getEmail()))
             throw new RuntimeException("Email already exists");
-
         User user = User.builder()
                 .username(req.getUsername())
                 .email(req.getEmail())
@@ -43,7 +40,6 @@ public class UserService implements UserDetailsService {
         String token = jwtService.generateToken(user.getEmail());
         return new AuthResponse(token, user.getUsername(), user.getEmail());
     }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
