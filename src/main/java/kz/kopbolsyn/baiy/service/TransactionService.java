@@ -4,9 +4,11 @@ import kz.kopbolsyn.baiy.dto.TransactionRequest;
 import kz.kopbolsyn.baiy.model.*;
 import kz.kopbolsyn.baiy.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +18,13 @@ public class TransactionService {
     private final AccountRepository accountRepository;
     private final CategoryRepository categoryRepository;
 
-    public Transaction create(TransactionRequest req) {
+    public Transaction create(TransactionRequest req, User currentUser) {
         Account account = accountRepository.findById(req.getAccountId())
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
+        if (!account.getUser().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("This account does not belong to you.");
+        }
         Transaction tx = Transaction.builder()
                 .account(account)
                 .amount(req.getAmount())
