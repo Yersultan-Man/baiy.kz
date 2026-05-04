@@ -1,0 +1,9 @@
+package kz.kopbolsyn.baiy.repository;
+
+import kz.kopbolsyn.baiy.model.Budget;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface BudgetRepository extends JpaRepository<Budget, Long> {
+    List<Budget> findByUserId(Long userId);
+}
