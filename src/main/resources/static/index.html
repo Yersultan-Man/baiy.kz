@@ -573,3 +573,508 @@
         const dt = document.getElementById('tx-date');
         if (dt) dt.value = new Date().toISOString().slice(0,10);
     });
+
+    // ════════ NAVIGATION ════════
+    function goPage(name) {
+        document.querySelectorAll('.pg').forEach(p => { p.classList.remove('act'); p.style.display = 'none'; });
+        const el = document.getElementById('pg-' + name);
+        if (!el) return;
+        el.style.display = '';
+        void el.offsetWidth;
+        el.classList.add('act');
+        buildNav();
+    }
+
+    function buildNav() {
+        const el = document.getElementById('nav-r');
+        const tg = `<svg style="width:14px;height:14px;fill:#29B6F6" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.012 9.485c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.736z"/></svg>`;
+        if (TOKEN && ME) {
+            el.innerHTML = `
+      <button class="ntab act" onclick="goPage('dash')">◈ Кабинет</button>
+      <a class="ntab tg" href="https://t.me/baiy_kz" target="_blank">${tg} Telegram</a>
+      <button class="ntab out" onclick="doLogout()">Выйти</button>`;
+        } else {
+            el.innerHTML = `
+      <button class="ntab" onclick="goPage('home')">Главная</button>
+      <button class="ntab" onclick="goPage('login')">Войти</button>
+      <button class="ntab primary" onclick="goPage('register')">Регистрация</button>
+      <a class="ntab tg" href="https://t.me/baiy_kz" target="_blank">${tg} Telegram</a>`;
+        }
+    }
+
+    function dtab(name) {
+        ['ov','ac','tx','bg','ct','cl','pr'].forEach(t => {
+            const d = document.getElementById('dt-'+t);
+            const s = document.getElementById('sn-'+t);
+            if (d) d.style.display = t === name ? '' : 'none';
+            if (s) s.classList.toggle('act', t === name);
+        });
+    }
+
+    // ════════ API HELPER ════════
+    async function api(path, method='GET', body=null) {
+        const opts = { method, headers: {'Content-Type':'application/json'} };
+        if (TOKEN) opts.headers['Authorization'] = 'Bearer ' + TOKEN;
+        if (body)  opts.body = JSON.stringify(body);
+        const r = await fetch(API + path, opts);
+        if (r.status === 204) return null;
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.message || data.error || 'HTTP ' + r.status);
+        return data;
+    }
+
+    // ════════════════════════════════════════════════
+    //  AUTH
+    //  POST /api/auth/register → {username, email, password}
+    //  POST /api/auth/login    → {email, password}
+    //  Response: {token, username, email}
+    // ════════════════════════════════════════════════
+    async function doLogin() {
+        hideMsg('l-err');
+        const email    = val('l-email').trim();
+        const password = val('l-pass');
+        if (!email || !password) return showMsg('l-err', 'Заполните email и пароль');
+        setBtnLoad('l-btn', true, 'Вход...');
+        try {
+            const data = await api('/auth/login', 'POST', { email, password });
+            saveSession(data);
+            toast('Добро пожаловать, ' + data.username + '! 👋');
+            goPage('dash');
+            loadAll();
+        } catch(e) { showMsg('l-err', e.message); }
+        finally    { setBtnLoad('l-btn', false, 'Войти →'); }
+    }
+
+    async function doRegister() {
+        hideMsg('r-err');
+        const username = val('r-un').trim();
+        const email    = val('r-em').trim();
+        const password = val('r-pw');
+        if (!username)           return showMsg('r-err', 'Введите имя пользователя');
+        if (!email)              return showMsg('r-err', 'Введите email');
+        if (password.length < 6) return showMsg('r-err', 'Пароль — минимум 6 символов');
+        setBtnLoad('r-btn', true, 'Создание...');
+        try {
+            // RegisterRequest: { username, email, password }
+            const data = await api('/auth/register', 'POST', { username, email, password });
+            saveSession(data);
+            toast('Аккаунт создан! Добро пожаловать 🎉');
+            goPage('dash');
+            loadAll();
+        } catch(e) { showMsg('r-err', e.message); }
+        finally    { setBtnLoad('r-btn', false, 'Создать аккаунт →'); }
+    }
+
+    function saveSession(data) {
+        // AuthResponse: { token, username, email }
+        TOKEN = data.token;
+        ME    = { token: data.token, username: data.username, email: data.email };
+        localStorage.setItem('bw_tok', TOKEN);
+        localStorage.setItem('bw_me',  JSON.stringify(ME));
+        fillSidebar(ME);
+        buildNav();
+    }
+
+    function fillSidebar(me) {
+        if (!me) return;
+        const ini = (me.username || '?').slice(0,2).toUpperCase();
+        setText('sb-av', ini);
+        setText('sb-nm', me.username || '—');
+        setText('sb-em', me.email    || '—');
+        setText('pr-un', me.username || '—');
+        setText('pr-em', me.email    || '—');
+        setText('ov-greet', 'Привет, ' + (me.username || '') + '!');
+    }
+
+    function doLogout() {
+        TOKEN = null; ME = null;
+        ACCOUNTS = []; TXNS = []; CATS = []; BUDGETS = [];
+        localStorage.removeItem('bw_tok');
+        localStorage.removeItem('bw_me');
+        buildNav();
+        goPage('home');
+        toast('Вы вышли из аккаунта');
+    }
+
+    // ════════════════════════════════════════════════
+    //  LOAD ALL
+    // ════════════════════════════════════════════════
+    async function loadAll() {
+        await Promise.allSettled([loadAccounts(), loadCategories(), loadTransactions(), loadBudgets()]);
+        renderOverview();
+    }
+
+    // ════════════════════════════════════════════════
+    //  ACCOUNTS  GET/POST /api/accounts
+    //  Request:  { name, type, balance }
+    //  Response: { id, name, type, balance, currency, user }
+    // ════════════════════════════════════════════════
+    async function loadAccounts() {
+        try { ACCOUNTS = await api('/accounts') || []; renderAccounts(); fillAccSelect(); }
+        catch(e) { console.warn('accounts:', e.message); }
+    }
+
+    function renderAccounts() {
+        const el = document.getElementById('ac-list');
+        if (!el) return;
+        if (!ACCOUNTS.length) { el.innerHTML = '<div class="empty">Нет счетов — создайте первый!</div>'; return; }
+        el.innerHTML = ACCOUNTS.map(a => `
+    <div class="tw-r g4">
+      <div style="font-weight:500">${esc(a.name)}</div>
+      <div><span class="badge ba">${esc(a.type||'—')}</span></div>
+      <div style="color:var(--G1);font-weight:600">${fmt(a.balance)} ₸</div>
+      <div></div>
+    </div>`).join('');
+    }
+
+    function fillAccSelect() {
+        const s = document.getElementById('tx-acc');
+        if (!s) return;
+        s.innerHTML = '<option value="">— выберите счёт —</option>' +
+            ACCOUNTS.map(a => `<option value="${a.id}">${esc(a.name)} (${fmt(a.balance)} ₸)</option>`).join('');
+    }
+
+    async function createAccount() {
+        hideMsg('ac-err');
+        const name    = val('ac-name').trim();
+        const type    = val('ac-type');
+        const balance = parseFloat(val('ac-bal')) || 0;
+        if (!name) return showMsg('ac-err', 'Введите название счёта');
+        try {
+            const acc = await api('/accounts', 'POST', { name, type, balance });
+            ACCOUNTS.push(acc);
+            renderAccounts(); fillAccSelect(); renderOverview();
+            setVal('ac-name',''); setVal('ac-bal','');
+            toast('Счёт «' + acc.name + '» создан!');
+        } catch(e) { showMsg('ac-err', e.message); }
+    }
+
+    // ════════════════════════════════════════════════
+    //  CATEGORIES  GET/POST /api/categories
+    //  Request:  { name, type, icon?, color? }
+    //  Response: { id, name, type, icon, color }
+    // ════════════════════════════════════════════════
+    async function loadCategories() {
+        try {
+            CATS = await api('/categories') || [];
+            renderCategories();
+            fillCatSelects();
+            // Если категорий нет — создаём дефолтные
+            await seedDefaultCategories();
+        } catch(e) { console.warn('categories:', e.message); }
+    }
+
+    function renderCategories() {
+        const el = document.getElementById('ct-grid');
+        if (!el) return;
+        if (!CATS.lengsth) { el.innerHTML = '<div class="empty">Нет категорий</div>'; return; }
+        el.innerHTML = CATS.map(c => `
+    <div style="background:var(--CARD);border:1px solid var(--B1);border-radius:12px;padding:16px;text-align:center">
+      <div style="font-size:26px;margin-bottom:8px">${esc(c.icon||'📦')}</div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:5px">${esc(c.name)}</div>
+      <span class="badge ${c.type==='INCOME'?'bg':'br'}">${c.type==='INCOME'?'Доход':'Расход'}</span>
+    </div>`).join('');
+    }
+
+    function fillCatSelects() {
+        const txSel = document.getElementById('tx-cat');
+        const bgSel = document.getElementById('bg-cat');
+        const allOpts = '<option value="">— без категории —</option>' +
+            CATS.map(c => `<option value="${c.id}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('');
+        const expOpts = '<option value="">— выберите —</option>' +
+            CATS.filter(c => c.type === 'EXPENSE')
+                .map(c => `<option value="${c.id}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('');
+        if (txSel) txSel.innerHTML = allOpts;
+        if (bgSel) bgSel.innerHTML = expOpts;
+    }
+
+    async function createCategory() {
+        hideMsg('ct-err');
+        const name  = val('ct-name').trim();
+        const type  = val('ct-type');
+        const icon  = val('ct-icon').trim()  || '📦';
+        const color = val('ct-color').trim() || '#00FF7F';
+        if (!name) return showMsg('ct-err', 'Введите название категории');
+        try {
+            const cat = await api('/categories', 'POST', { name, type, icon, color });
+            CATS.push(cat);
+            renderCategories(); fillCatSelects();
+            setVal('ct-name',''); setVal('ct-icon',''); setVal('ct-color','');
+            toast('Категория «' + cat.name + '» добавлена!');
+        } catch(e) { showMsg('ct-err', e.message); }
+    }
+
+    // ════════════════════════════════════════════════
+    //  TRANSACTIONS  GET/POST/DELETE /api/transactions
+    //  Request:  { amount, type, accountId, categoryId?, description?, date? }
+    //  Response: { id, amount, type, description, date, account{}, category{} }
+    // ════════════════════════════════════════════════
+    async function loadTransactions() {
+        try { TXNS = await api('/transactions') || []; renderTransactions(); }
+        catch(e) { console.warn('transactions:', e.message); }
+    }
+
+    function renderTransactions() {
+        const el = document.getElementById('tx-list');
+        if (!el) return;
+        if (!TXNS.length) { el.innerHTML = '<div class="empty">Нет транзакций — добавьте первую!</div>'; return; }
+        const sorted = [...TXNS].sort((a,b) => String(b.date||'').localeCompare(String(a.date||'')));
+        el.innerHTML = sorted.map(t => {
+            const inc  = t.type === 'INCOME';
+            const desc = t.description || (t.category ? t.category.name : '—');
+            return `<div class="tw-r g5">
+      <div>
+        <div style="font-weight:500">${esc(desc)}</div>
+        ${t.category ? `<div style="font-size:11px;color:var(--TX3);margin-top:2px">${t.category.icon||''} ${esc(t.category.name)}</div>` : ''}
+      </div>
+      <div style="color:var(--TX3)">${t.date||'—'}</div>
+      <div><span class="badge ${inc?'bg':'br'}">${inc?'Доход':'Расход'}</span></div>
+      <div style="color:${inc?'var(--G1)':'var(--RED)'};font-weight:600">${inc?'+':'-'}${fmt(t.amount)} ₸</div>
+      <div><button class="del-btn" onclick="deleteTx(${t.id})">✕</button></div>
+    </div>`;
+        }).join('');
+    }
+
+    async function createTransaction() {
+        hideMsg('tx-err');
+        const amount    = parseFloat(val('tx-amt'));
+        const type      = val('tx-type');
+        const accountId = val('tx-acc');
+        const catId     = val('tx-cat');
+        const desc      = val('tx-desc').trim();
+        const date      = val('tx-date');
+        if (!amount || amount <= 0) return showMsg('tx-err', 'Введите сумму больше нуля');
+        if (!accountId)             return showMsg('tx-err', 'Выберите счёт');
+        try {
+            const body = { amount, type, accountId: +accountId,
+                description: desc || null, date: date || null };
+            if (catId) body.categoryId = +catId;
+            // POST /api/transactions
+            const tx = await api('/transactions', 'POST', body);
+            TXNS.unshift(tx);
+            // Обновляем баланс локально
+            const acc = ACCOUNTS.find(a => a.id === +accountId);
+            if (acc) acc.balance = type === 'INCOME' ? +acc.balance + amount : +acc.balance - amount;
+            renderTransactions(); renderAccounts(); fillAccSelect(); renderOverview();
+            setVal('tx-amt',''); setVal('tx-desc','');
+            toast('Транзакция добавлена!');
+        } catch(e) { showMsg('tx-err', e.message); }
+    }
+
+    async function deleteTx(id) {
+        try {
+            await api('/transactions/' + id, 'DELETE');
+            TXNS = TXNS.filter(t => t.id !== id);
+            renderTransactions(); renderOverview();
+            toast('Удалено');
+        } catch(e) { toast(e.message, 'e'); }
+    }
+
+    // ════════════════════════════════════════════════
+    //  BUDGETS  GET/POST/DELETE /api/budgets
+    //  Request:  { categoryId, limitAmount, period }
+    //  Response: { id, category{}, limitAmount, spentAmount, period }
+    // ════════════════════════════════════════════════
+    async function loadBudgets() {
+        try { BUDGETS = await api('/budgets') || []; renderBudgets(); }
+        catch(e) { console.warn('budgets:', e.message); }
+    }
+
+    function renderBudgets() {
+        const el = document.getElementById('bg-list');
+        if (!el) return;
+        if (!BUDGETS.length) { el.innerHTML = '<div class="empty">Нет бюджетов — создайте первый!</div>'; return; }
+        el.innerHTML = BUDGETS.map(b => {
+            const pct = +b.limitAmount > 0 ? Math.min(100, Math.round((+b.spentAmount / +b.limitAmount) * 100)) : 0;
+            const col = pct >= 90 ? 'var(--RED)' : pct >= 70 ? 'var(--AMBER)' : 'var(--G1)';
+            return `<div class="tw-r g5b">
+      <div>
+        <div style="font-weight:500">${b.category ? esc(b.category.name) : '—'}</div>
+        <div style="background:var(--BG3);border-radius:4px;height:4px;margin-top:6px;overflow:hidden">
+          <div style="width:${pct}%;height:100%;background:${col};border-radius:4px;transition:width .4s"></div>
+        </div>
+        <div style="font-size:11px;color:var(--TX3);margin-top:3px">${pct}% использовано</div>
+      </div>
+      <div style="color:var(--G1);font-weight:600">${fmt(b.limitAmount)} ₸</div>
+      <div style="color:${pct>=90?'var(--RED)':'var(--TX)'}">${fmt(b.spentAmount)} ₸</div>
+      <div><span class="badge ba">${esc(b.period||'—')}</span></div>
+      <div><button class="del-btn" onclick="deleteBudget(${b.id})">✕</button></div>
+    </div>`;
+        }).join('');
+    }
+
+    async function createBudget() {
+        hideMsg('bg-err');
+        const catId       = val('bg-cat');
+        const limitAmount = parseFloat(val('bg-lmt'));
+        const period      = val('bg-period');
+        if (!catId)                      return showMsg('bg-err', 'Выберите категорию');
+        if (!limitAmount || limitAmount <= 0) return showMsg('bg-err', 'Введите лимит больше нуля');
+        try {
+            const b = await api('/budgets', 'POST', { categoryId: +catId, limitAmount, period });
+            BUDGETS.push(b);
+            renderBudgets(); renderOverview();
+            setVal('bg-lmt','');
+            toast('Бюджет создан!');
+        } catch(e) { showMsg('bg-err', e.message); }
+    }
+
+    async function deleteBudget(id) {
+        try {
+            await api('/budgets/' + id, 'DELETE');
+            BUDGETS = BUDGETS.filter(b => b.id !== id);
+            renderBudgets(); renderOverview();
+            toast('Бюджет удалён');
+        } catch(e) { toast(e.message, 'e'); }
+    }
+
+    // ════════ OVERVIEW ════════
+    function renderOverview() {
+        const now   = new Date();
+        const curM  = now.getMonth();
+        const curY  = now.getFullYear();
+
+        // labels
+        setText('ov-month-name', now.toLocaleString('ru-RU',{month:'long',year:'numeric'}));
+        setText('ov-year-name',  String(curY));
+
+        // totals
+        const bal = ACCOUNTS.reduce((s,a) => s + (+a.balance||0), 0);
+        setText('ov-bal', '₸ ' + fmt(bal));
+        setText('ov-acc', ACCOUNTS.length);
+        setText('ov-txn', TXNS.length);
+        setText('ov-bud', BUDGETS.length);
+
+        // month filter
+        const thisMonth = TXNS.filter(t => {
+            if (!t.date) return false;
+            const d = new Date(t.date);
+            return d.getMonth() === curM && d.getFullYear() === curY;
+        });
+        const incM = thisMonth.filter(t=>t.type==='INCOME').reduce((s,t)=>s+(+t.amount||0),0);
+        const expM = thisMonth.filter(t=>t.type==='EXPENSE').reduce((s,t)=>s+(+t.amount||0),0);
+        const netM = incM - expM;
+        setText('ov-inc-m', '₸ ' + fmt(incM));
+        setText('ov-exp-m', '₸ ' + fmt(expM));
+        const netEl = document.getElementById('ov-net-m');
+        if (netEl) {
+            netEl.textContent = (netM >= 0 ? '+' : '') + fmt(netM) + ' ₸';
+            netEl.style.color = netM >= 0 ? 'var(--G1)' : 'var(--RED)';
+        }
+
+        // year filter
+        const thisYear = TXNS.filter(t => t.date && new Date(t.date).getFullYear() === curY);
+        const incY = thisYear.filter(t=>t.type==='INCOME').reduce((s,t)=>s+(+t.amount||0),0);
+        const expY = thisYear.filter(t=>t.type==='EXPENSE').reduce((s,t)=>s+(+t.amount||0),0);
+        setText('ov-inc-y', '₸ ' + fmt(incY));
+        setText('ov-exp-y', '₸ ' + fmt(expY));
+
+        // category breakdown chart
+        const catMap = {};
+        TXNS.filter(t=>t.type==='EXPENSE').forEach(t => {
+            const name = t.category ? t.category.name : 'Без категории';
+            const icon = t.category ? (t.category.icon||'📦') : '📦';
+            if (!catMap[name]) catMap[name] = { icon, total: 0 };
+            catMap[name].total += (+t.amount||0);
+        });
+        const catArr = Object.entries(catMap).sort((a,b) => b[1].total - a[1].total);
+        const maxVal = catArr[0]?.[1].total || 1;
+        const chartEl = document.getElementById('ov-cats-chart');
+        if (chartEl) {
+            if (!catArr.length) {
+                chartEl.innerHTML = '<div class="empty">Нет расходов для анализа</div>';
+            } else {
+                chartEl.innerHTML = catArr.map(([name, data]) => {
+                    const pct = Math.round((data.total / maxVal) * 100);
+                    const barColor = name==='Рестораны'||name==='Ресторан' ? 'var(--AMBER)'
+                        : name==='Развлечения' ? '#a78bfa'
+                            : 'var(--G3)';
+                    return `<div style="display:grid;grid-template-columns:26px 1fr 110px;gap:10px;align-items:center;margin-bottom:10px">
+          <div style="font-size:18px;text-align:center">${data.icon}</div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+              <span style="font-size:13px;font-weight:500">${esc(name)}</span>
+            </div>
+            <div style="background:var(--BG3);border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:${pct}%;height:100%;background:${barColor};border-radius:4px;transition:width .5s"></div>
+            </div>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:var(--RED);text-align:right">-${fmt(data.total)} ₸</div>
+        </div>`;
+                }).join('');
+            }
+        }
+    }
+
+    // ════════ SEED DEFAULT CATEGORIES ════════
+    // Создаёт дефолтные категории если список пустой
+    async function seedDefaultCategories() {
+        if (CATS.length > 0) return;
+        const defaults = [
+            { name:'Рестораны',    type:'EXPENSE', icon:'🍽',  color:'#FFB82E' },
+            { name:'Продукты',     type:'EXPENSE', icon:'🛒',  color:'#00C45E' },
+            { name:'Развлечения',  type:'EXPENSE', icon:'🎮',  color:'#a78bfa' },
+            { name:'Транспорт',    type:'EXPENSE', icon:'🚌',  color:'#29B6F6' },
+            { name:'Здоровье',     type:'EXPENSE', icon:'💊',  color:'#FF4D6D' },
+            { name:'Одежда',       type:'EXPENSE', icon:'👕',  color:'#fb923c' },
+            { name:'Коммунальные', type:'EXPENSE', icon:'🏠',  color:'#94a3b8' },
+            { name:'Зарплата',     type:'INCOME',  icon:'💰',  color:'#00FF7F' },
+            { name:'Фриланс',      type:'INCOME',  icon:'💻',  color:'#00E56F' },
+            { name:'Подарки',      type:'INCOME',  icon:'🎁',  color:'#f472b6' },
+        ];
+        for (const cat of defaults) {
+            try {
+                const c = await api('/categories', 'POST', cat);
+                CATS.push(c);
+            } catch(e) { /* already exists */ }
+        }
+        renderCategories();
+        fillCatSelects();
+        toast('Добавлены стандартные категории 🏷');
+    }
+
+    // ════════ CALCULATOR ════════
+    function calcUpd() {
+        const P = parseFloat(document.getElementById('cl-p')?.value) || 0;
+        const c = parseFloat(document.getElementById('cl-c')?.value) || 0;
+        const r = (parseFloat(document.getElementById('cl-r')?.value) || 12) / 100 / 12;
+        const n = (parseFloat(document.getElementById('cl-y')?.value) || 10) * 12;
+        if (r <= 0 || n <= 0) return;
+        const total    = P * Math.pow(1+r,n) + c * (Math.pow(1+r,n)-1) / r;
+        const invested = P + c * n;
+        const profit   = total - invested;
+        setText('cl-res', fmt(Math.round(total)) + ' ₸');
+        setText('cl-sub',
+            'Вложено: ' + fmt(Math.round(invested)) + ' ₸  ·  ' +
+            'Прибыль: +' + fmt(Math.round(profit)) + ' ₸  (' +
+            Math.round((profit / Math.max(invested,1)) * 100) + '%)');
+    }
+
+    // ════════ UI HELPERS ════════
+    const val     = id  => (document.getElementById(id)||{}).value || '';
+    const setVal  = (id,v) => { const e=document.getElementById(id); if(e) e.value=v; };
+    const setText = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+    const fmt     = n   => (+n||0).toLocaleString('ru-RU',{minimumFractionDigits:0,maximumFractionDigits:2});
+    const esc     = s   => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    function setBtnLoad(id, on, txt) {
+        const b = document.getElementById(id);
+        if (!b) return;
+        b.disabled = on;
+        if (txt) b.textContent = txt;
+    }
+
+    function showMsg(id, msg) { const e=document.getElementById(id); if(e){e.textContent=msg;e.classList.add('show');} }
+    function hideMsg(id)       { const e=document.getElementById(id); if(e) e.classList.remove('show'); }
+
+    let _tt;
+    function toast(msg, type='') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast' + (type==='e' ? ' terr' : '') + ' show';
+        clearTimeout(_tt);
+        _tt = setTimeout(() => t.classList.remove('show'), 3200);
+    }
+</script>
+</body>
+</html>
