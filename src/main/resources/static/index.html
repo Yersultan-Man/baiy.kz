@@ -87,7 +87,7 @@
         .auth-center{display:flex;align-items:center;justify-content:center;
             min-height:calc(100vh - 62px);padding:32px 16px;
             background:radial-gradient(ellipse 500px 500px at 50% 10%,rgba(0,255,127,.05) 0%,transparent 65%)}
-        .auth-box{background:var(--CARD);border:1px solid var(--B2);border-radius:22px;padding:42px 38px;width:100%;max-width:440px}
+        .auth-box{background:var(--CARD);border:1px solid var(--B2);border-radius:22px;padding:42px 38px;width:100%;max-width:460px}
         .auth-logo{font-family:var(--HEAD);font-size:24px;font-weight:700;color:var(--G1);margin-bottom:6px}
         .auth-sub{font-size:13px;color:var(--TX2);margin-bottom:30px}
         .fg{margin-bottom:16px}
@@ -169,10 +169,6 @@
         .lo-btn{background:rgba(255,77,109,.08);color:var(--RED);border:1px solid rgba(255,77,109,.2);
             padding:11px 22px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s}
         .lo-btn:hover{background:rgba(255,77,109,.15)}
-        .tg-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(41,182,246,.10);
-            color:var(--BLUE);border:1px solid rgba(41,182,246,.2);padding:10px 18px;border-radius:10px;
-            font-size:13px;font-weight:500;text-decoration:none;transition:background .2s}
-        .tg-btn:hover{background:rgba(41,182,246,.20)}
         .ro{background:var(--BG3);border:1px solid var(--B1);border-radius:10px;padding:11px 14px;font-size:14px;color:var(--TX2)}
         .empty{padding:28px 18px;font-size:13px;color:var(--TX3);text-align:center}
 
@@ -205,13 +201,13 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- ═══ NAV ═══ -->
+<!-- NAV -->
 <nav>
     <div class="logo" onclick="goPage('home')">baiy<em>.kz</em></div>
     <div class="nav-r" id="nav-r"></div>
 </nav>
 
-<!-- ═══ HOME ═══ -->
+<!-- HOME -->
 <div class="pg act" id="pg-home">
     <div class="home-wrap">
         <div class="home-badge"><div class="dot"></div>Финансовый трекер 2026</div>
@@ -234,7 +230,7 @@
     </div>
 </div>
 
-<!-- ═══ LOGIN ═══ -->
+<!-- LOGIN -->
 <div class="pg" id="pg-login">
     <div class="auth-center">
         <div class="auth-box">
@@ -251,15 +247,19 @@
     </div>
 </div>
 
-<!-- ═══ REGISTER ═══ -->
+<!-- REGISTER -->
 <div class="pg" id="pg-register">
     <div class="auth-center">
         <div class="auth-box">
             <div class="auth-logo">baiy.kz</div>
             <div class="auth-sub">Создайте аккаунт — это бесплатно</div>
             <div class="msg msg-e" id="r-err"></div>
-            <div class="fg"><label>Имя пользователя *</label>
-                <input type="text" id="r-un" placeholder="ivan_ivanov"></div>
+            <div class="frow">
+                <div class="fg"><label>Фамилия *</label>
+                    <input type="text" id="r-ln" placeholder="Иванов"></div>
+                <div class="fg"><label>Имя *</label>
+                    <input type="text" id="r-fn" placeholder="Иван"></div>
+            </div>
             <div class="fg"><label>Email *</label>
                 <input type="email" id="r-em" placeholder="you@example.com"></div>
             <div class="fg"><label>Пароль * (мин. 6 символов)</label>
@@ -270,10 +270,9 @@
     </div>
 </div>
 
-<!-- ═══ DASHBOARD ═══ -->
+<!-- DASHBOARD -->
 <div class="pg" id="pg-dash">
     <div class="dash">
-
         <!-- SIDEBAR -->
         <div class="sb">
             <div class="sb-user">
@@ -295,20 +294,17 @@
         <!-- MAIN CONTENT -->
         <div class="dc">
 
-            <!-- ── OVERVIEW ── -->
+            <!-- OVERVIEW -->
             <div id="dt-ov">
                 <div class="dc-head">
                     <div class="dc-title" id="ov-greet">Добро пожаловать!</div>
                     <div class="dc-sub"   id="ov-date"></div>
                 </div>
-                <!-- Основные карточки -->
                 <div class="cg cg3">
                     <div class="sc hi"><div class="sc-lbl">Общий баланс</div><div class="sc-val g" id="ov-bal">₸ 0</div></div>
                     <div class="sc"><div class="sc-lbl">Счетов</div><div class="sc-val" id="ov-acc">0</div></div>
                     <div class="sc"><div class="sc-lbl">Транзакций</div><div class="sc-val" id="ov-txn">0</div></div>
                 </div>
-
-                <!-- Доходы и расходы за месяц -->
                 <div style="font-size:11px;font-weight:700;color:var(--TX3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;margin-top:4px">
                     📅 Текущий месяц — <span id="ov-month-name"></span>
                 </div>
@@ -317,8 +313,6 @@
                     <div class="sc"><div class="sc-lbl">Расходы за месяц</div><div class="sc-val r" id="ov-exp-m">₸ 0</div></div>
                     <div class="sc"><div class="sc-lbl">Баланс за месяц</div><div class="sc-val" id="ov-net-m">₸ 0</div></div>
                 </div>
-
-                <!-- Доходы и расходы за год -->
                 <div style="font-size:11px;font-weight:700;color:var(--TX3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">
                     📆 Текущий год — <span id="ov-year-name"></span>
                 </div>
@@ -327,17 +321,15 @@
                     <div class="sc"><div class="sc-lbl">Расходы за год</div><div class="sc-val r" id="ov-exp-y">₸ 0</div></div>
                     <div class="sc"><div class="sc-lbl">Активных бюджетов</div><div class="sc-val a" id="ov-bud">0</div></div>
                 </div>
-
-                <!-- Топ расходов по категориям -->
                 <div style="font-size:11px;font-weight:700;color:var(--TX3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;margin-top:20px">
-                    🏷 Расходы по категориям (за всё время)
+                    🏷 Расходы по категориям
                 </div>
                 <div class="sec" style="padding:18px 22px">
                     <div id="ov-cats-chart"><div class="empty">Нет данных</div></div>
                 </div>
             </div>
 
-            <!-- ── ACCOUNTS ── -->
+            <!-- ACCOUNTS -->
             <div id="dt-ac" style="display:none">
                 <div class="dc-head"><div class="dc-title">Счета</div><div class="dc-sub">Ваши финансовые счета</div></div>
                 <div class="sec">
@@ -366,7 +358,7 @@
                 </div>
             </div>
 
-            <!-- ── TRANSACTIONS ── -->
+            <!-- TRANSACTIONS -->
             <div id="dt-tx" style="display:none">
                 <div class="dc-head"><div class="dc-title">Транзакции</div><div class="dc-sub">История доходов и расходов</div></div>
                 <div class="sec">
@@ -397,7 +389,7 @@
                 </div>
             </div>
 
-            <!-- ── BUDGETS ── -->
+            <!-- BUDGETS -->
             <div id="dt-bg" style="display:none">
                 <div class="dc-head"><div class="dc-title">Бюджеты</div><div class="dc-sub">Лимиты расходов по категориям</div></div>
                 <div class="sec">
@@ -424,7 +416,7 @@
                 </div>
             </div>
 
-            <!-- ── CATEGORIES ── -->
+            <!-- CATEGORIES -->
             <div id="dt-ct" style="display:none">
                 <div class="dc-head"><div class="dc-title">Категории</div><div class="dc-sub">Управляйте категориями транзакций</div></div>
                 <div class="sec">
@@ -444,23 +436,23 @@
                         <div class="fg"><label>Цвет (hex)</label><input type="text" id="ct-color" placeholder="#00FF7F" maxlength="7"></div>
                     </div>
                     <button class="sv-btn" onclick="createCategory()">+ Добавить категорию</button>
-                    <button onclick="seedDefaultCategories()" style="background:transparent;color:var(--TX2);border:1px solid var(--B1);padding:11px 20px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--SANS);transition:all .18s;margin-left:10px" onmouseover="this.style.borderColor='var(--B2)'" onmouseout="this.style.borderColor='var(--B1)'">🏷 Добавить стандартные</button>
+                    <button onclick="seedDefaultCategories()" style="background:transparent;color:var(--TX2);border:1px solid var(--B1);padding:11px 20px;border-radius:10px;font-size:13px;cursor:pointer;font-family:var(--SANS);margin-left:10px">🏷 Стандартные</button>
                 </div>
                 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px" id="ct-grid"></div>
             </div>
 
-            <!-- ── CALCULATOR ── -->
+            <!-- CALCULATOR -->
             <div id="dt-cl" style="display:none">
                 <div class="dc-head"><div class="dc-title">Калькулятор</div><div class="dc-sub">Сложный процент — рост ваших сбережений</div></div>
                 <div class="sec">
                     <div class="sec-h">Параметры расчёта</div>
                     <div class="frow">
                         <div class="fg"><label>Начальная сумма (₸)</label><input type="number" id="cl-p" value="500000" oninput="calcUpd()"></div>
-                        <div class="fg"><label>Взнос в месяц (₸)</label>  <input type="number" id="cl-c" value="50000"  oninput="calcUpd()"></div>
+                        <div class="fg"><label>Взнос в месяц (₸)</label><input type="number" id="cl-c" value="50000" oninput="calcUpd()"></div>
                     </div>
                     <div class="frow">
                         <div class="fg"><label>Доходность в год (%)</label><input type="number" id="cl-r" value="12" oninput="calcUpd()"></div>
-                        <div class="fg"><label>Срок (лет)</label>           <input type="number" id="cl-y" value="10" oninput="calcUpd()"></div>
+                        <div class="fg"><label>Срок (лет)</label><input type="number" id="cl-y" value="10" oninput="calcUpd()"></div>
                     </div>
                     <div style="background:var(--GD);border:1px solid var(--B3);border-radius:12px;padding:22px;margin-top:8px">
                         <div style="font-size:11px;font-weight:700;color:var(--G1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Итоговая сумма</div>
@@ -470,65 +462,17 @@
                 </div>
             </div>
 
-            <!-- ── PROFILE ── -->
+            <!-- PROFILE -->
             <div id="dt-pr" style="display:none">
                 <div class="dc-head"><div class="dc-title">Профиль</div><div class="dc-sub">Данные вашего аккаунта</div></div>
                 <div class="sec">
                     <div class="sec-h">Информация об аккаунте</div>
-                    <div class="sec-sub">Имя пользователя и email</div>
+                    <div class="sec-sub">Имя и email</div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px">
-                        <div>
-                            <label style="margin-bottom:6px">Имя пользователя</label>
-                            <div class="ro" id="pr-un">—</div>
-                        </div>
-                        <div>
-                            <label style="margin-bottom:6px">Email</label>
-                            <div class="ro" id="pr-em">—</div>
-                        </div>
+                        <div><label style="margin-bottom:6px">Имя</label><div class="ro" id="pr-nm">—</div></div>
+                        <div><label style="margin-bottom:6px">Email</label><div class="ro" id="pr-em">—</div></div>
                     </div>
-                    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-                        <button class="lo-btn" onclick="doLogout()">Выйти из аккаунта</button>
-                    </div>
-                </div>
-
-                <!-- TELEGRAM SECTION -->
-                <div class="sec" style="border-color:rgba(41,182,246,.2);background:rgba(41,182,246,.04)">
-                    <div class="sec-h" style="color:#29B6F6">Telegram</div>
-                    <div class="sec-sub">Подпишитесь на наш канал и получайте финансовые советы каждый день</div>
-
-                    <!-- Channel card -->
-                    <div style="background:rgba(41,182,246,.08);border:1px solid rgba(41,182,246,.2);border-radius:12px;padding:18px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px">
-                        <div style="width:48px;height:48px;border-radius:12px;background:rgba(41,182,246,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                            <svg style="width:22px;height:22px;fill:#29B6F6" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.012 9.485c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.736z"/></svg>
-                        </div>
-                        <div style="flex:1">
-                            <div style="font-size:14px;font-weight:600;color:var(--TX);margin-bottom:3px">@baiy_kz</div>
-                            <div style="font-size:12px;color:var(--TX3)">Финансовые советы, новости рынка, лайфхаки по бюджету</div>
-                        </div>
-                        <a class="tg-btn" href="https://t.me/baiy_kz" target="_blank" style="flex-shrink:0">
-                            <svg style="width:14px;height:14px;fill:#29B6F6" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.012 9.485c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.736z"/></svg>
-                            Подписаться
-                        </a>
-                    </div>
-
-                    <!-- What you get -->
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-                        <div style="background:var(--CARD2);border:1px solid var(--B1);border-radius:10px;padding:14px;text-align:center">
-                            <div style="font-size:22px;margin-bottom:6px">💡</div>
-                            <div style="font-size:12px;font-weight:600;color:var(--TX);margin-bottom:3px">Советы</div>
-                            <div style="font-size:11px;color:var(--TX3)">Как экономить и инвестировать</div>
-                        </div>
-                        <div style="background:var(--CARD2);border:1px solid var(--B1);border-radius:10px;padding:14px;text-align:center">
-                            <div style="font-size:22px;margin-bottom:6px">📊</div>
-                            <div style="font-size:12px;font-weight:600;color:var(--TX);margin-bottom:3px">Аналитика</div>
-                            <div style="font-size:11px;color:var(--TX3)">Курсы валют и рынки</div>
-                        </div>
-                        <div style="background:var(--CARD2);border:1px solid var(--B1);border-radius:10px;padding:14px;text-align:center">
-                            <div style="font-size:22px;margin-bottom:6px">🎯</div>
-                            <div style="font-size:12px;font-weight:600;color:var(--TX);margin-bottom:3px">Цели</div>
-                            <div style="font-size:11px;color:var(--TX3)">Мотивация к накоплениям</div>
-                        </div>
-                    </div>
+                    <button class="lo-btn" onclick="doLogout()">Выйти из аккаунта</button>
                 </div>
             </div>
 
@@ -538,48 +482,35 @@
 
 <script>
     'use strict';
-    // ════════════════════════════════════════════════
-    //  API BASE — nginx проксирует /api → Spring Boot :8080
-    // ════════════════════════════════════════════════
-    const API = 'http://localhost:8080/api';
-
+    const API = '/api';
     let TOKEN    = localStorage.getItem('bw_tok') || null;
     let ME       = JSON.parse(localStorage.getItem('bw_me') || 'null');
     let ACCOUNTS = [], TXNS = [], CATS = [], BUDGETS = [];
 
-    // ════════ INIT ════════
     window.addEventListener('load', () => {
         setTimeout(() => {
             const l = document.getElementById('loader');
             l.style.opacity = '0';
             setTimeout(() => l.style.display = 'none', 400);
         }, 700);
-
         buildNav();
-        if (TOKEN && ME) {
-            fillSidebar(ME);
-            goPage('dash');
-            loadAll();
-        } else {
-            goPage('home');
-        }
+        if (TOKEN && ME) { fillSidebar(ME); goPage('dash'); loadAll(); }
+        else goPage('home');
         setInterval(() => {
             const el = document.getElementById('ov-date');
             if (el) el.textContent = new Date().toLocaleString('ru-RU',
                 {weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
         }, 1000);
-
         calcUpd();
         const dt = document.getElementById('tx-date');
         if (dt) dt.value = new Date().toISOString().slice(0,10);
     });
 
-    // ════════ NAVIGATION ════════
     function goPage(name) {
-        document.querySelectorAll('.pg').forEach(p => { p.classList.remove('act'); p.style.display = 'none'; });
-        const el = document.getElementById('pg-' + name);
+        document.querySelectorAll('.pg').forEach(p => { p.classList.remove('act'); p.style.display='none'; });
+        const el = document.getElementById('pg-'+name);
         if (!el) return;
-        el.style.display = '';
+        el.style.display='';
         void el.offsetWidth;
         el.classList.add('act');
         buildNav();
@@ -606,12 +537,11 @@
         ['ov','ac','tx','bg','ct','cl','pr'].forEach(t => {
             const d = document.getElementById('dt-'+t);
             const s = document.getElementById('sn-'+t);
-            if (d) d.style.display = t === name ? '' : 'none';
-            if (s) s.classList.toggle('act', t === name);
+            if (d) d.style.display = t===name ? '' : 'none';
+            if (s) s.classList.toggle('act', t===name);
         });
     }
 
-    // ════════ API HELPER ════════
     async function api(path, method='GET', body=null) {
         const opts = { method, headers: {'Content-Type':'application/json'} };
         if (TOKEN) opts.headers['Authorization'] = 'Bearer ' + TOKEN;
@@ -623,12 +553,7 @@
         return data;
     }
 
-    // ════════════════════════════════════════════════
-    //  AUTH
-    //  POST /api/auth/register → {username, email, password}
-    //  POST /api/auth/login    → {email, password}
-    //  Response: {token, username, email}
-    // ════════════════════════════════════════════════
+    // AUTH
     async function doLogin() {
         hideMsg('l-err');
         const email    = val('l-email').trim();
@@ -638,37 +563,40 @@
         try {
             const data = await api('/auth/login', 'POST', { email, password });
             saveSession(data);
-            toast('Добро пожаловать, ' + data.username + '! 👋');
-            goPage('dash');
-            loadAll();
+            toast('Добро пожаловать, ' + ME.fullName + '! 👋');
+            goPage('dash'); loadAll();
         } catch(e) { showMsg('l-err', e.message); }
         finally    { setBtnLoad('l-btn', false, 'Войти →'); }
     }
 
     async function doRegister() {
         hideMsg('r-err');
-        const username = val('r-un').trim();
-        const email    = val('r-em').trim();
-        const password = val('r-pw');
-        if (!username)           return showMsg('r-err', 'Введите имя пользователя');
+        const firstName = val('r-fn').trim();
+        const lastName  = val('r-ln').trim();
+        const email     = val('r-em').trim();
+        const password  = val('r-pw');
+        if (!firstName)          return showMsg('r-err', 'Введите имя');
+        if (!lastName)           return showMsg('r-err', 'Введите фамилию');
         if (!email)              return showMsg('r-err', 'Введите email');
         if (password.length < 6) return showMsg('r-err', 'Пароль — минимум 6 символов');
         setBtnLoad('r-btn', true, 'Создание...');
         try {
-            // RegisterRequest: { username, email, password }
-            const data = await api('/auth/register', 'POST', { username, email, password });
+            const data = await api('/auth/register', 'POST', { firstName, lastName, email, password });
             saveSession(data);
             toast('Аккаунт создан! Добро пожаловать 🎉');
-            goPage('dash');
-            loadAll();
+            goPage('dash'); loadAll();
         } catch(e) { showMsg('r-err', e.message); }
         finally    { setBtnLoad('r-btn', false, 'Создать аккаунт →'); }
     }
 
     function saveSession(data) {
-        // AuthResponse: { token, username, email }
         TOKEN = data.token;
-        ME    = { token: data.token, username: data.username, email: data.email };
+        const u = data.user || {};
+        ME = {
+            token: data.token,
+            fullName: u.firstName ? (u.lastName + ' ' + u.firstName) : (data.username || data.email),
+            email: u.email || data.email
+        };
         localStorage.setItem('bw_tok', TOKEN);
         localStorage.setItem('bw_me',  JSON.stringify(ME));
         fillSidebar(ME);
@@ -677,43 +605,33 @@
 
     function fillSidebar(me) {
         if (!me) return;
-        const ini = (me.username || '?').slice(0,2).toUpperCase();
-        setText('sb-av', ini);
-        setText('sb-nm', me.username || '—');
+        const parts = (me.fullName || '??').split(' ');
+        const ini = (parts[0]?.[0] || '') + (parts[1]?.[0] || '');
+        setText('sb-av', ini.toUpperCase() || '?');
+        setText('sb-nm', me.fullName || '—');
         setText('sb-em', me.email    || '—');
-        setText('pr-un', me.username || '—');
+        setText('pr-nm', me.fullName || '—');
         setText('pr-em', me.email    || '—');
-        setText('ov-greet', 'Привет, ' + (me.username || '') + '!');
+        setText('ov-greet', 'Привет, ' + (me.fullName?.split(' ')[1] || me.fullName || '') + '!');
     }
 
     function doLogout() {
-        TOKEN = null; ME = null;
-        ACCOUNTS = []; TXNS = []; CATS = []; BUDGETS = [];
-        localStorage.removeItem('bw_tok');
-        localStorage.removeItem('bw_me');
-        buildNav();
-        goPage('home');
-        toast('Вы вышли из аккаунта');
+        TOKEN=null; ME=null; ACCOUNTS=[]; TXNS=[]; CATS=[]; BUDGETS=[];
+        localStorage.removeItem('bw_tok'); localStorage.removeItem('bw_me');
+        buildNav(); goPage('home'); toast('Вы вышли из аккаунта');
     }
 
-    // ════════════════════════════════════════════════
-    //  LOAD ALL
-    // ════════════════════════════════════════════════
+    // LOAD ALL
     async function loadAll() {
         await Promise.allSettled([loadAccounts(), loadCategories(), loadTransactions(), loadBudgets()]);
         renderOverview();
     }
 
-    // ════════════════════════════════════════════════
-    //  ACCOUNTS  GET/POST /api/accounts
-    //  Request:  { name, type, balance }
-    //  Response: { id, name, type, balance, currency, user }
-    // ════════════════════════════════════════════════
+    // ACCOUNTS
     async function loadAccounts() {
         try { ACCOUNTS = await api('/accounts') || []; renderAccounts(); fillAccSelect(); }
         catch(e) { console.warn('accounts:', e.message); }
     }
-
     function renderAccounts() {
         const el = document.getElementById('ac-list');
         if (!el) return;
@@ -726,14 +644,12 @@
       <div></div>
     </div>`).join('');
     }
-
     function fillAccSelect() {
         const s = document.getElementById('tx-acc');
         if (!s) return;
         s.innerHTML = '<option value="">— выберите счёт —</option>' +
             ACCOUNTS.map(a => `<option value="${a.id}">${esc(a.name)} (${fmt(a.balance)} ₸)</option>`).join('');
     }
-
     async function createAccount() {
         hideMsg('ac-err');
         const name    = val('ac-name').trim();
@@ -742,32 +658,24 @@
         if (!name) return showMsg('ac-err', 'Введите название счёта');
         try {
             const acc = await api('/accounts', 'POST', { name, type, balance });
-            ACCOUNTS.push(acc);
-            renderAccounts(); fillAccSelect(); renderOverview();
+            ACCOUNTS.push(acc); renderAccounts(); fillAccSelect(); renderOverview();
             setVal('ac-name',''); setVal('ac-bal','');
             toast('Счёт «' + acc.name + '» создан!');
         } catch(e) { showMsg('ac-err', e.message); }
     }
 
-    // ════════════════════════════════════════════════
-    //  CATEGORIES  GET/POST /api/categories
-    //  Request:  { name, type, icon?, color? }
-    //  Response: { id, name, type, icon, color }
-    // ════════════════════════════════════════════════
+    // CATEGORIES
     async function loadCategories() {
         try {
             CATS = await api('/categories') || [];
-            renderCategories();
-            fillCatSelects();
-            // Если категорий нет — создаём дефолтные
-            await seedDefaultCategories();
+            renderCategories(); fillCatSelects();
+            if (CATS.length === 0) await seedDefaultCategories();
         } catch(e) { console.warn('categories:', e.message); }
     }
-
     function renderCategories() {
         const el = document.getElementById('ct-grid');
         if (!el) return;
-        if (!CATS.lengsth) { el.innerHTML = '<div class="empty">Нет категорий</div>'; return; }
+        if (!CATS.length) { el.innerHTML = '<div class="empty">Нет категорий</div>'; return; }
         el.innerHTML = CATS.map(c => `
     <div style="background:var(--CARD);border:1px solid var(--B1);border-radius:12px;padding:16px;text-align:center">
       <div style="font-size:26px;margin-bottom:8px">${esc(c.icon||'📦')}</div>
@@ -775,19 +683,16 @@
       <span class="badge ${c.type==='INCOME'?'bg':'br'}">${c.type==='INCOME'?'Доход':'Расход'}</span>
     </div>`).join('');
     }
-
     function fillCatSelects() {
         const txSel = document.getElementById('tx-cat');
         const bgSel = document.getElementById('bg-cat');
         const allOpts = '<option value="">— без категории —</option>' +
             CATS.map(c => `<option value="${c.id}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('');
         const expOpts = '<option value="">— выберите —</option>' +
-            CATS.filter(c => c.type === 'EXPENSE')
-                .map(c => `<option value="${c.id}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('');
+            CATS.filter(c=>c.type==='EXPENSE').map(c => `<option value="${c.id}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('');
         if (txSel) txSel.innerHTML = allOpts;
         if (bgSel) bgSel.innerHTML = expOpts;
     }
-
     async function createCategory() {
         hideMsg('ct-err');
         const name  = val('ct-name').trim();
@@ -797,23 +702,17 @@
         if (!name) return showMsg('ct-err', 'Введите название категории');
         try {
             const cat = await api('/categories', 'POST', { name, type, icon, color });
-            CATS.push(cat);
-            renderCategories(); fillCatSelects();
+            CATS.push(cat); renderCategories(); fillCatSelects();
             setVal('ct-name',''); setVal('ct-icon',''); setVal('ct-color','');
             toast('Категория «' + cat.name + '» добавлена!');
         } catch(e) { showMsg('ct-err', e.message); }
     }
 
-    // ════════════════════════════════════════════════
-    //  TRANSACTIONS  GET/POST/DELETE /api/transactions
-    //  Request:  { amount, type, accountId, categoryId?, description?, date? }
-    //  Response: { id, amount, type, description, date, account{}, category{} }
-    // ════════════════════════════════════════════════
+    // TRANSACTIONS
     async function loadTransactions() {
         try { TXNS = await api('/transactions') || []; renderTransactions(); }
         catch(e) { console.warn('transactions:', e.message); }
     }
-
     function renderTransactions() {
         const el = document.getElementById('tx-list');
         if (!el) return;
@@ -834,7 +733,6 @@
     </div>`;
         }).join('');
     }
-
     async function createTransaction() {
         hideMsg('tx-err');
         const amount    = parseFloat(val('tx-amt'));
@@ -846,52 +744,43 @@
         if (!amount || amount <= 0) return showMsg('tx-err', 'Введите сумму больше нуля');
         if (!accountId)             return showMsg('tx-err', 'Выберите счёт');
         try {
-            const body = { amount, type, accountId: +accountId,
-                description: desc || null, date: date || null };
+            const body = { amount, type, accountId: +accountId, description: desc||null, date: date||null };
             if (catId) body.categoryId = +catId;
-            // POST /api/transactions
             const tx = await api('/transactions', 'POST', body);
             TXNS.unshift(tx);
-            // Обновляем баланс локально
             const acc = ACCOUNTS.find(a => a.id === +accountId);
-            if (acc) acc.balance = type === 'INCOME' ? +acc.balance + amount : +acc.balance - amount;
+            if (acc) acc.balance = type==='INCOME' ? +acc.balance+amount : +acc.balance-amount;
             renderTransactions(); renderAccounts(); fillAccSelect(); renderOverview();
             setVal('tx-amt',''); setVal('tx-desc','');
             toast('Транзакция добавлена!');
         } catch(e) { showMsg('tx-err', e.message); }
     }
-
     async function deleteTx(id) {
         try {
-            await api('/transactions/' + id, 'DELETE');
+            await api('/transactions/'+id, 'DELETE');
             TXNS = TXNS.filter(t => t.id !== id);
             renderTransactions(); renderOverview();
             toast('Удалено');
-        } catch(e) { toast(e.message, 'e'); }
+        } catch(e) { toast(e.message,'e'); }
     }
 
-    // ════════════════════════════════════════════════
-    //  BUDGETS  GET/POST/DELETE /api/budgets
-    //  Request:  { categoryId, limitAmount, period }
-    //  Response: { id, category{}, limitAmount, spentAmount, period }
-    // ════════════════════════════════════════════════
+    // BUDGETS
     async function loadBudgets() {
         try { BUDGETS = await api('/budgets') || []; renderBudgets(); }
         catch(e) { console.warn('budgets:', e.message); }
     }
-
     function renderBudgets() {
         const el = document.getElementById('bg-list');
         if (!el) return;
         if (!BUDGETS.length) { el.innerHTML = '<div class="empty">Нет бюджетов — создайте первый!</div>'; return; }
         el.innerHTML = BUDGETS.map(b => {
-            const pct = +b.limitAmount > 0 ? Math.min(100, Math.round((+b.spentAmount / +b.limitAmount) * 100)) : 0;
+            const pct = +b.limitAmount > 0 ? Math.min(100, Math.round((+b.spentAmount / +b.limitAmount)*100)) : 0;
             const col = pct >= 90 ? 'var(--RED)' : pct >= 70 ? 'var(--AMBER)' : 'var(--G1)';
             return `<div class="tw-r g5b">
       <div>
         <div style="font-weight:500">${b.category ? esc(b.category.name) : '—'}</div>
         <div style="background:var(--BG3);border-radius:4px;height:4px;margin-top:6px;overflow:hidden">
-          <div style="width:${pct}%;height:100%;background:${col};border-radius:4px;transition:width .4s"></div>
+          <div style="width:${pct}%;height:100%;background:${col};border-radius:4px"></div>
         </div>
         <div style="font-size:11px;color:var(--TX3);margin-top:3px">${pct}% использовано</div>
       </div>
@@ -902,74 +791,52 @@
     </div>`;
         }).join('');
     }
-
     async function createBudget() {
         hideMsg('bg-err');
         const catId       = val('bg-cat');
         const limitAmount = parseFloat(val('bg-lmt'));
         const period      = val('bg-period');
-        if (!catId)                      return showMsg('bg-err', 'Выберите категорию');
+        if (!catId)                          return showMsg('bg-err', 'Выберите категорию');
         if (!limitAmount || limitAmount <= 0) return showMsg('bg-err', 'Введите лимит больше нуля');
         try {
             const b = await api('/budgets', 'POST', { categoryId: +catId, limitAmount, period });
-            BUDGETS.push(b);
-            renderBudgets(); renderOverview();
+            BUDGETS.push(b); renderBudgets(); renderOverview();
             setVal('bg-lmt','');
             toast('Бюджет создан!');
         } catch(e) { showMsg('bg-err', e.message); }
     }
-
     async function deleteBudget(id) {
         try {
-            await api('/budgets/' + id, 'DELETE');
+            await api('/budgets/'+id, 'DELETE');
             BUDGETS = BUDGETS.filter(b => b.id !== id);
             renderBudgets(); renderOverview();
             toast('Бюджет удалён');
-        } catch(e) { toast(e.message, 'e'); }
+        } catch(e) { toast(e.message,'e'); }
     }
 
-    // ════════ OVERVIEW ════════
+    // OVERVIEW
     function renderOverview() {
-        const now   = new Date();
-        const curM  = now.getMonth();
-        const curY  = now.getFullYear();
-
-        // labels
+        const now  = new Date();
+        const curM = now.getMonth();
+        const curY = now.getFullYear();
         setText('ov-month-name', now.toLocaleString('ru-RU',{month:'long',year:'numeric'}));
-        setText('ov-year-name',  String(curY));
-
-        // totals
-        const bal = ACCOUNTS.reduce((s,a) => s + (+a.balance||0), 0);
-        setText('ov-bal', '₸ ' + fmt(bal));
+        setText('ov-year-name', String(curY));
+        const bal = ACCOUNTS.reduce((s,a) => s+(+a.balance||0), 0);
+        setText('ov-bal', '₸ '+fmt(bal));
         setText('ov-acc', ACCOUNTS.length);
         setText('ov-txn', TXNS.length);
         setText('ov-bud', BUDGETS.length);
-
-        // month filter
-        const thisMonth = TXNS.filter(t => {
-            if (!t.date) return false;
-            const d = new Date(t.date);
-            return d.getMonth() === curM && d.getFullYear() === curY;
-        });
+        const thisMonth = TXNS.filter(t => { if(!t.date) return false; const d=new Date(t.date); return d.getMonth()===curM && d.getFullYear()===curY; });
         const incM = thisMonth.filter(t=>t.type==='INCOME').reduce((s,t)=>s+(+t.amount||0),0);
         const expM = thisMonth.filter(t=>t.type==='EXPENSE').reduce((s,t)=>s+(+t.amount||0),0);
         const netM = incM - expM;
-        setText('ov-inc-m', '₸ ' + fmt(incM));
-        setText('ov-exp-m', '₸ ' + fmt(expM));
+        setText('ov-inc-m', '₸ '+fmt(incM));
+        setText('ov-exp-m', '₸ '+fmt(expM));
         const netEl = document.getElementById('ov-net-m');
-        if (netEl) {
-            netEl.textContent = (netM >= 0 ? '+' : '') + fmt(netM) + ' ₸';
-            netEl.style.color = netM >= 0 ? 'var(--G1)' : 'var(--RED)';
-        }
-
-        // year filter
-        const thisYear = TXNS.filter(t => t.date && new Date(t.date).getFullYear() === curY);
-        const incY = thisYear.filter(t=>t.type==='INCOME').reduce((s,t)=>s+(+t.amount||0),0);
-        const expY = thisYear.filter(t=>t.type==='EXPENSE').reduce((s,t)=>s+(+t.amount||0),0);
-        setText('ov-inc-y', '₸ ' + fmt(incY));
-        setText('ov-exp-y', '₸ ' + fmt(expY));
-
-        // category breakdown chart
+        if (netEl) { netEl.textContent=(netM>=0?'+':'')+fmt(netM)+' ₸'; netEl.style.color=netM>=0?'var(--G1)':'var(--RED)'; }
+        const thisYear = TXNS.filter(t => t.date && new Date(t.date).getFullYear()===curY);
+        setText('ov-inc-y', '₸ '+fmt(thisYear.filter(t=>t.type==='INCOME').reduce((s,t)=>s+(+t.amount||0),0)));
+        setText('ov-exp-y', '₸ '+fmt(thisYear.filter(t=>t.type==='EXPENSE').reduce((s,t)=>s+(+t.amount||0),0)));
         const catMap = {};
         TXNS.filter(t=>t.type==='EXPENSE').forEach(t => {
             const name = t.category ? t.category.name : 'Без категории';
@@ -981,22 +848,16 @@
         const maxVal = catArr[0]?.[1].total || 1;
         const chartEl = document.getElementById('ov-cats-chart');
         if (chartEl) {
-            if (!catArr.length) {
-                chartEl.innerHTML = '<div class="empty">Нет расходов для анализа</div>';
-            } else {
+            if (!catArr.length) { chartEl.innerHTML = '<div class="empty">Нет расходов для анализа</div>'; }
+            else {
                 chartEl.innerHTML = catArr.map(([name, data]) => {
-                    const pct = Math.round((data.total / maxVal) * 100);
-                    const barColor = name==='Рестораны'||name==='Ресторан' ? 'var(--AMBER)'
-                        : name==='Развлечения' ? '#a78bfa'
-                            : 'var(--G3)';
+                    const pct = Math.round((data.total/maxVal)*100);
                     return `<div style="display:grid;grid-template-columns:26px 1fr 110px;gap:10px;align-items:center;margin-bottom:10px">
           <div style="font-size:18px;text-align:center">${data.icon}</div>
           <div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-              <span style="font-size:13px;font-weight:500">${esc(name)}</span>
-            </div>
+            <div style="font-size:13px;font-weight:500;margin-bottom:5px">${esc(name)}</div>
             <div style="background:var(--BG3);border-radius:4px;height:6px;overflow:hidden">
-              <div style="width:${pct}%;height:100%;background:${barColor};border-radius:4px;transition:width .5s"></div>
+              <div style="width:${pct}%;height:100%;background:var(--G3);border-radius:4px"></div>
             </div>
           </div>
           <div style="font-size:13px;font-weight:600;color:var(--RED);text-align:right">-${fmt(data.total)} ₸</div>
@@ -1006,34 +867,29 @@
         }
     }
 
-    // ════════ SEED DEFAULT CATEGORIES ════════
-    // Создаёт дефолтные категории если список пустой
+    // SEED DEFAULT CATEGORIES
     async function seedDefaultCategories() {
         if (CATS.length > 0) return;
         const defaults = [
-            { name:'Рестораны',    type:'EXPENSE', icon:'🍽',  color:'#FFB82E' },
-            { name:'Продукты',     type:'EXPENSE', icon:'🛒',  color:'#00C45E' },
-            { name:'Развлечения',  type:'EXPENSE', icon:'🎮',  color:'#a78bfa' },
-            { name:'Транспорт',    type:'EXPENSE', icon:'🚌',  color:'#29B6F6' },
-            { name:'Здоровье',     type:'EXPENSE', icon:'💊',  color:'#FF4D6D' },
-            { name:'Одежда',       type:'EXPENSE', icon:'👕',  color:'#fb923c' },
-            { name:'Коммунальные', type:'EXPENSE', icon:'🏠',  color:'#94a3b8' },
-            { name:'Зарплата',     type:'INCOME',  icon:'💰',  color:'#00FF7F' },
-            { name:'Фриланс',      type:'INCOME',  icon:'💻',  color:'#00E56F' },
-            { name:'Подарки',      type:'INCOME',  icon:'🎁',  color:'#f472b6' },
+            {name:'Рестораны',type:'EXPENSE',icon:'🍽',color:'#FFB82E'},
+            {name:'Продукты',type:'EXPENSE',icon:'🛒',color:'#00C45E'},
+            {name:'Развлечения',type:'EXPENSE',icon:'🎮',color:'#a78bfa'},
+            {name:'Транспорт',type:'EXPENSE',icon:'🚌',color:'#29B6F6'},
+            {name:'Здоровье',type:'EXPENSE',icon:'💊',color:'#FF4D6D'},
+            {name:'Одежда',type:'EXPENSE',icon:'👕',color:'#fb923c'},
+            {name:'Коммунальные',type:'EXPENSE',icon:'🏠',color:'#94a3b8'},
+            {name:'Зарплата',type:'INCOME',icon:'💰',color:'#00FF7F'},
+            {name:'Фриланс',type:'INCOME',icon:'💻',color:'#00E56F'},
+            {name:'Подарки',type:'INCOME',icon:'🎁',color:'#f472b6'},
         ];
         for (const cat of defaults) {
-            try {
-                const c = await api('/categories', 'POST', cat);
-                CATS.push(c);
-            } catch(e) { /* already exists */ }
+            try { const c = await api('/categories','POST',cat); CATS.push(c); } catch(e) {}
         }
-        renderCategories();
-        fillCatSelects();
+        renderCategories(); fillCatSelects();
         toast('Добавлены стандартные категории 🏷');
     }
 
-    // ════════ CALCULATOR ════════
+    // CALCULATOR
     function calcUpd() {
         const P = parseFloat(document.getElementById('cl-p')?.value) || 0;
         const c = parseFloat(document.getElementById('cl-c')?.value) || 0;
@@ -1044,36 +900,25 @@
         const invested = P + c * n;
         const profit   = total - invested;
         setText('cl-res', fmt(Math.round(total)) + ' ₸');
-        setText('cl-sub',
-            'Вложено: ' + fmt(Math.round(invested)) + ' ₸  ·  ' +
-            'Прибыль: +' + fmt(Math.round(profit)) + ' ₸  (' +
-            Math.round((profit / Math.max(invested,1)) * 100) + '%)');
+        setText('cl-sub', 'Вложено: '+fmt(Math.round(invested))+' ₸  ·  Прибыль: +'+fmt(Math.round(profit))+' ₸  ('+Math.round((profit/Math.max(invested,1))*100)+'%)');
     }
 
-    // ════════ UI HELPERS ════════
+    // UI HELPERS
     const val     = id  => (document.getElementById(id)||{}).value || '';
     const setVal  = (id,v) => { const e=document.getElementById(id); if(e) e.value=v; };
     const setText = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
     const fmt     = n   => (+n||0).toLocaleString('ru-RU',{minimumFractionDigits:0,maximumFractionDigits:2});
     const esc     = s   => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-    function setBtnLoad(id, on, txt) {
-        const b = document.getElementById(id);
-        if (!b) return;
-        b.disabled = on;
-        if (txt) b.textContent = txt;
-    }
-
-    function showMsg(id, msg) { const e=document.getElementById(id); if(e){e.textContent=msg;e.classList.add('show');} }
-    function hideMsg(id)       { const e=document.getElementById(id); if(e) e.classList.remove('show'); }
-
+    function setBtnLoad(id,on,txt){const b=document.getElementById(id);if(!b)return;b.disabled=on;if(txt)b.textContent=txt;}
+    function showMsg(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show');}}
+    function hideMsg(id){const e=document.getElementById(id);if(e)e.classList.remove('show');}
     let _tt;
-    function toast(msg, type='') {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.className = 'toast' + (type==='e' ? ' terr' : '') + ' show';
+    function toast(msg,type=''){
+        const t=document.getElementById('toast');
+        t.textContent=msg;
+        t.className='toast'+(type==='e'?' terr':'')+' show';
         clearTimeout(_tt);
-        _tt = setTimeout(() => t.classList.remove('show'), 3200);
+        _tt=setTimeout(()=>t.classList.remove('show'),3200);
     }
 </script>
 </body>
