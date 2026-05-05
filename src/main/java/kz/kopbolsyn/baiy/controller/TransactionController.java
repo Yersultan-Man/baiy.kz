@@ -20,8 +20,10 @@ public class TransactionController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<Transaction> create(@Valid @RequestBody TransactionRequest req) {
-        return ResponseEntity.ok(transactionService.create(req));
+    public ResponseEntity<Transaction> create(@Valid @RequestBody TransactionRequest req,
+                                              @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getCurrentUser(userDetails.getUsername());
+        return ResponseEntity.ok(transactionService.create(req, user));
     }
 
     @GetMapping
@@ -31,13 +33,17 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(transactionService.getById(id));
+    public ResponseEntity<Transaction> getById(@PathVariable Long id,
+                                               @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getCurrentUser(userDetails.getUsername());
+        return ResponseEntity.ok(transactionService.getById(id, user));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        transactionService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getCurrentUser(userDetails.getUsername());
+        transactionService.delete(id, user);
         return ResponseEntity.noContent().build();
     }
 }
