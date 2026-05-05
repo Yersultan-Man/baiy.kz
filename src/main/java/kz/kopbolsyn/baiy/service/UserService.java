@@ -19,26 +19,41 @@ public class UserService implements UserDetailsService {
 
     public AuthResponse register(RegisterRequest req) {
         if (userRepository.existsByEmail(req.getEmail()))
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException("Email уже используется");
 
         User user = User.builder()
-                .username(req.getUsername())
+                .firstName(req.getFirstName())
+                .lastName(req.getLastName())
+                .middleName(req.getMiddleName())
                 .email(req.getEmail())
                 .password(passwordEncoder.encode(req.getPassword()))
+                .salary(req.getSalary())
+                .telegram(req.getTelegram())
                 .role(User.Role.USER)
                 .build();
+
         userRepository.save(user);
         String token = jwtService.generateToken(user.getEmail());
-        return new AuthResponse(token, user.getUsername(), user.getEmail());
+        return new AuthResponse(token, toDto(user));
     }
 
     public AuthResponse login(LoginRequest req) {
         User user = userRepository.findByEmail(req.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword()))
-            throw new RuntimeException("Wrong password");
+            throw new RuntimeException("Неверный пароль");
         String token = jwtService.generateToken(user.getEmail());
-        return new AuthResponse(token, user.getUsername(), user.getEmail());
+        return new AuthResponse(token, toDto(user));
+    }
+
+    public UserDto updateProfile(User user, RegisterRequest req) {
+        user.setFirstName(req.getFirstName());
+        user.setLastName(req.getLastName());
+        user.setMiddleName(req.getMiddleName());
+        user.setSalary(req.getSalary());
+        user.setTelegram(req.getTelegram());
+        userRepository.save(user);
+        return toDto(user);
     }
 
     @Override
@@ -55,5 +70,18 @@ public class UserService implements UserDetailsService {
     public User getCurrentUser(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public UserDto toDto(User u) {
+        return UserDto.builder()
+                .id(u.getId())
+                .firstName(u.getFirstName())
+                .lastName(u.getLastName())
+                .middleName(u.getMiddleName())
+                .email(u.getEmail())
+                .telegram(u.getTelegram())
+                .salary(u.getSalary())
+                .createdAt(u.getCreatedAt())
+                .build();
     }
 }
