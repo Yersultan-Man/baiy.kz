@@ -21,12 +21,17 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsByEmail(req.getEmail()))
             throw new RuntimeException("Email уже используется");
 
+        String username = (req.getUsername() != null && !req.getUsername().isBlank())
+                ? req.getUsername()
+                : req.getEmail().split("@")[0];
+
         User user = User.builder()
+                .username(username)
+                .email(req.getEmail())
+                .password(passwordEncoder.encode(req.getPassword()))
                 .firstName(req.getFirstName())
                 .lastName(req.getLastName())
                 .middleName(req.getMiddleName())
-                .email(req.getEmail())
-                .password(passwordEncoder.encode(req.getPassword()))
                 .salary(req.getSalary())
                 .telegram(req.getTelegram())
                 .role(User.Role.USER)
@@ -46,16 +51,6 @@ public class UserService implements UserDetailsService {
         return new AuthResponse(token, toDto(user));
     }
 
-    public UserDto updateProfile(User user, RegisterRequest req) {
-        user.setFirstName(req.getFirstName());
-        user.setLastName(req.getLastName());
-        user.setMiddleName(req.getMiddleName());
-        user.setSalary(req.getSalary());
-        user.setTelegram(req.getTelegram());
-        userRepository.save(user);
-        return toDto(user);
-    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
@@ -72,15 +67,26 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public UserDto toDto(User u) {
+    public User updateProfile(String email, ProfileUpdateRequest req) {
+        User user = getCurrentUser(email);
+        if (req.getFirstName()  != null) user.setFirstName(req.getFirstName());
+        if (req.getLastName()   != null) user.setLastName(req.getLastName());
+        if (req.getMiddleName() != null) user.setMiddleName(req.getMiddleName());
+        if (req.getSalary()     != null) user.setSalary(req.getSalary());
+        user.setTelegram(req.getTelegram());
+        return userRepository.save(user);
+    }
+
+    private UserDto toDto(User u) {
         return UserDto.builder()
                 .id(u.getId())
+                .username(u.getUsername())
+                .email(u.getEmail())
                 .firstName(u.getFirstName())
                 .lastName(u.getLastName())
                 .middleName(u.getMiddleName())
-                .email(u.getEmail())
-                .telegram(u.getTelegram())
                 .salary(u.getSalary())
+                .telegram(u.getTelegram())
                 .createdAt(u.getCreatedAt())
                 .build();
     }

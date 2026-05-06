@@ -4,6 +4,7 @@ import kz.kopbolsyn.baiy.model.Category;
 import kz.kopbolsyn.baiy.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -18,5 +19,9 @@ public class CategoryService {
 
     public Category create(Category category) {
         return categoryRepository.save(category);
+    }
+
+    public void delete(Long id) {
+        categoryRepository.deleteById(id);
     }
 }

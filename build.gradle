@@ -39,9 +39,11 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // Jackson Hibernate module — fixes 500 on lazy-loaded entities
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate6:2.16.1'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    runtimeOnly 'org.postgresql:postgresql'
 }
 
 tasks.named('test') {

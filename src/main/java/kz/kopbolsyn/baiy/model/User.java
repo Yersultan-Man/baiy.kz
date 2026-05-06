@@ -8,16 +8,18 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
-    private String lastName;
-    private String middleName;
+    @Column(unique = true)
+    private String username;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -25,12 +27,20 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    // Name fields
+    private String firstName;
+    private String lastName;
+    private String middleName;
+
+    // Extra profile
     private BigDecimal salary;
     private String telegram;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private Role role = Role.USER;
 
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

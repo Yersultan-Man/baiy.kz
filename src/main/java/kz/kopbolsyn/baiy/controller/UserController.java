@@ -1,7 +1,6 @@
 package kz.kopbolsyn.baiy.controller;
 
-import kz.kopbolsyn.baiy.dto.RegisterRequest;
-import kz.kopbolsyn.baiy.dto.UserDto;
+import kz.kopbolsyn.baiy.dto.ProfileUpdateRequest;
 import kz.kopbolsyn.baiy.model.User;
 import kz.kopbolsyn.baiy.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +16,15 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/me")
-    public ResponseEntity<UserDto> getMe(
-            @AuthenticationPrincipal UserDetails userDetails) {
-        User user = userService.getCurrentUser(userDetails.getUsername());
-        return ResponseEntity.ok(userService.toDto(user));
+    @GetMapping("/profile")
+    public ResponseEntity<User> getProfile(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(userService.getCurrentUser(userDetails.getUsername()));
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<UserDto> updateProfile(
-            @RequestBody RegisterRequest req,
-            @AuthenticationPrincipal UserDetails userDetails) {
-        User user = userService.getCurrentUser(userDetails.getUsername());
-        return ResponseEntity.ok(userService.updateProfile(user, req));
+    public ResponseEntity<User> updateProfile(@RequestBody ProfileUpdateRequest req,
+                                              @AuthenticationPrincipal UserDetails userDetails) {
+        User updated = userService.updateProfile(userDetails.getUsername(), req);
+        return ResponseEntity.ok(updated);
     }
 }

@@ -37,4 +37,16 @@ public class AccountController {
         User user = userService.getCurrentUser(userDetails.getUsername());
         return ResponseEntity.ok(accountRepository.findByUserId(user.getId()));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getCurrentUser(userDetails.getUsername());
+        accountRepository.findById(id).ifPresent(acc -> {
+            if (acc.getUser().getId().equals(user.getId())) {
+                accountRepository.deleteById(id);
+            }
+        });
+        return ResponseEntity.noContent().build();
+    }
 }
