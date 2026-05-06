@@ -21,17 +21,12 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsByEmail(req.getEmail()))
             throw new RuntimeException("Email уже используется");
 
-        String username = (req.getUsername() != null && !req.getUsername().isBlank())
-                ? req.getUsername()
-                : req.getEmail().split("@")[0];
-
         User user = User.builder()
-                .username(username)
-                .email(req.getEmail())
-                .password(passwordEncoder.encode(req.getPassword()))
                 .firstName(req.getFirstName())
                 .lastName(req.getLastName())
                 .middleName(req.getMiddleName())
+                .email(req.getEmail())
+                .password(passwordEncoder.encode(req.getPassword()))
                 .salary(req.getSalary())
                 .telegram(req.getTelegram())
                 .role(User.Role.USER)
@@ -77,16 +72,15 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    private UserDto toDto(User u) {
+    public UserDto toDto(User u) {
         return UserDto.builder()
                 .id(u.getId())
-                .username(u.getUsername())
-                .email(u.getEmail())
                 .firstName(u.getFirstName())
                 .lastName(u.getLastName())
                 .middleName(u.getMiddleName())
-                .salary(u.getSalary())
+                .email(u.getEmail())
                 .telegram(u.getTelegram())
+                .salary(u.getSalary())
                 .createdAt(u.getCreatedAt())
                 .build();
     }

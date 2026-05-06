@@ -10,900 +10,915 @@
         *{box-sizing:border-box;margin:0;padding:0}
         :root{
             --G1:#00FF7F;--G2:#00E56F;--G3:#00C45E;--G4:#009948;--GD:#003D1E;
-            --BG:#07110D;--BG2:#0D1E16;--BG3:#122418;--CARD:#101E16;--CARD2:#162B1D;
-            --B1:rgba(0,255,127,.10);--B2:rgba(0,255,127,.22);--B3:rgba(0,255,127,.35);
-            --TX:#E2F5EB;--TX2:#8DBFA0;--TX3:#4A7860;
+            --BG:#060F0A;--BG2:#0C1A12;--BG3:#111E16;--CARD:#0F1D15;--CARD2:#152819;
+            --B1:rgba(0,255,127,.10);--B2:rgba(0,255,127,.22);--B3:rgba(0,255,127,.38);
+            --TX:#E4F6ED;--TX2:#8DBFA0;--TX3:#4A7860;
             --RED:#FF4D6D;--AMBER:#FFB82E;--BLUE:#29B6F6;
             --SANS:'Golos Text',sans-serif;--HEAD:'Unbounded',sans-serif;
         }
         html,body{font-family:var(--SANS);background:var(--BG);color:var(--TX);min-height:100vh;overflow-x:hidden}
-        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--BG2)}::-webkit-scrollbar-thumb{background:var(--G4);border-radius:3px}
-        #loader{position:fixed;inset:0;background:var(--BG);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
-        .loader-logo{font-family:var(--HEAD);font-size:36px;font-weight:700;color:var(--G1);animation:glow 1.4s ease-in-out infinite}
-        @keyframes glow{0%,100%{text-shadow:0 0 8px var(--G1)}50%{text-shadow:0 0 28px var(--G1),0 0 60px var(--G3)}}
-        nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(7,17,13,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--B1)}
-        .logo{font-family:var(--HEAD);font-size:18px;font-weight:700;color:var(--G1);cursor:pointer;letter-spacing:-.5px}
+        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--BG2)}
+        ::-webkit-scrollbar-thumb{background:var(--G4);border-radius:3px}
+
+        /* LOADER */
+        #loader{position:fixed;inset:0;background:var(--BG);display:flex;flex-direction:column;
+            align-items:center;justify-content:center;z-index:9999;transition:opacity .5s}
+        .ld-ring{width:54px;height:54px;border-radius:50%;border:2px solid var(--B2);
+            border-top-color:var(--G1);animation:spin .85s linear infinite;margin-bottom:16px}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .ld-txt{font-family:var(--HEAD);font-size:22px;color:var(--G1);animation:glow 1.5s ease-in-out infinite}
+        @keyframes glow{0%,100%{text-shadow:0 0 8px var(--G1)}50%{text-shadow:0 0 28px var(--G1),0 0 56px var(--G3)}}
+
+        /* NAV */
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:62px;
+            display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+            background:rgba(6,15,10,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--B1)}
+        .logo{font-family:var(--HEAD);font-size:19px;font-weight:700;color:var(--G1);cursor:pointer;letter-spacing:-.5px}
         .logo em{color:var(--TX2);font-style:normal;font-weight:400}
-        .nav-right{display:flex;align-items:center;gap:6px}
-        .ntab{padding:7px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid transparent;background:transparent;color:var(--TX2);font-family:var(--SANS);transition:all .18s;white-space:nowrap}
+        .nav-r{display:flex;align-items:center;gap:5px}
+        .ntab{padding:7px 15px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;
+            border:1px solid transparent;background:transparent;color:var(--TX2);font-family:var(--SANS);
+            transition:all .18s;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
         .ntab:hover{color:var(--G1);border-color:var(--B2)}
         .ntab.act{background:var(--GD);color:var(--G1);border-color:var(--B3)}
-        .ntab.primary{background:var(--G1);color:#07110D;font-weight:600;border-color:var(--G1)}
-        .ntab.primary:hover{background:var(--G2)}
-        .ntab.tg{background:rgba(41,182,246,.1);color:var(--BLUE);border-color:rgba(41,182,246,.25);display:flex;align-items:center;gap:5px}
-        .ntab.tg:hover{background:rgba(41,182,246,.18)}
-        .ntab.logout{color:var(--RED)}
-        .ntab.logout:hover{background:rgba(255,77,109,.08);border-color:rgba(255,77,109,.2)}
-        .pg{display:none;min-height:100vh;padding-top:60px}
+        .ntab.primary{background:var(--G1);color:#060F0A;font-weight:700}
+        .ntab.primary:hover{background:#33FF96}
+        .ntab.tg{background:rgba(41,182,246,.10);color:var(--BLUE);border-color:rgba(41,182,246,.25)}
+        .ntab.tg:hover{background:rgba(41,182,246,.20)}
+        .ntab.out{color:var(--RED)}.ntab.out:hover{background:rgba(255,77,109,.08);border-color:rgba(255,77,109,.2)}
+
+        /* PAGES */
+        .pg{display:none;min-height:100vh;padding-top:62px}
         .pg.act{display:block}
-        .pg.flex-center{display:none;align-items:center;justify-content:center;min-height:100vh;padding-top:60px;background:var(--BG)}
-        .pg.flex-center.act{display:flex}
-        #pg-home{background:var(--BG);background-image:radial-gradient(ellipse 700px 500px at 5% 15%,rgba(0,255,127,.07) 0%,transparent 65%),radial-gradient(ellipse 500px 700px at 95% 85%,rgba(0,200,100,.04) 0%,transparent 65%)}
-        .home-inner{max-width:820px;margin:0 auto;padding:90px 28px 60px;text-align:center}
-        .badge{display:inline-flex;align-items:center;gap:8px;background:var(--B1);border:1px solid var(--B2);color:var(--G1);font-size:11px;font-weight:600;padding:5px 16px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:28px}
-        .dot-pulse{width:7px;height:7px;border-radius:50%;background:var(--G1);animation:dp 2s infinite}
-        @keyframes dp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
-        .home-h1{font-family:var(--HEAD);font-size:54px;font-weight:700;line-height:1.06;margin-bottom:18px;letter-spacing:-1.5px}
-        .home-h1 .hi{color:var(--G1);position:relative}
-        .home-h1 .hi::after{content:'';position:absolute;left:0;bottom:-4px;right:0;height:2px;background:var(--G1);border-radius:2px;opacity:.5}
-        .home-p{font-size:16px;color:var(--TX2);max-width:480px;margin:0 auto 40px;font-weight:300;line-height:1.75}
-        .hbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+        /* HOME */
+        #pg-home{background:var(--BG);
+            background-image:radial-gradient(ellipse 700px 500px at 0% 10%,rgba(0,255,127,.07) 0%,transparent 60%),
+            radial-gradient(ellipse 500px 700px at 100% 90%,rgba(0,180,90,.04) 0%,transparent 60%)}
+        .home-wrap{max-width:860px;margin:0 auto;padding:96px 28px 64px;text-align:center}
+        .home-badge{display:inline-flex;align-items:center;gap:8px;background:var(--B1);border:1px solid var(--B2);
+            color:var(--G1);font-size:11px;font-weight:600;padding:5px 16px;border-radius:20px;
+            letter-spacing:1px;text-transform:uppercase;margin-bottom:30px}
+        .dot{width:7px;height:7px;border-radius:50%;background:var(--G1);animation:dp 2s infinite}
+        @keyframes dp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.5)}}
+        .home-h1{font-family:var(--HEAD);font-size:54px;font-weight:700;line-height:1.06;margin-bottom:20px;letter-spacing:-2px}
+        .home-h1 .accent{color:var(--G1)}
+        .home-p{font-size:16px;color:var(--TX2);max-width:500px;margin:0 auto 44px;font-weight:300;line-height:1.8}
+        .home-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
         .btn{padding:13px 30px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--SANS);transition:all .2s;border:none}
-        .btn-g{background:var(--G1);color:#07110D}.btn-g:hover{background:#33FF96;transform:translateY(-2px)}
-        .btn-outline{background:transparent;color:var(--G1);border:1px solid var(--B3)}.btn-outline:hover{background:var(--B1);transform:translateY(-1px)}
-        .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--B1);border-radius:16px;overflow:hidden;max-width:600px;margin:60px auto 0}
-        .stat{background:var(--CARD);padding:22px;text-align:center}
-        .stat-n{font-family:var(--HEAD);font-size:30px;font-weight:700;color:var(--G1)}
-        .stat-l{font-size:12px;color:var(--TX3);margin-top:5px}
-        .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:820px;margin:56px auto 0;padding:0 28px}
-        .feat{background:var(--CARD);border:1px solid var(--B1);border-radius:16px;padding:22px;transition:all .2s}
+        .btn-g{background:var(--G1);color:#060F0A}
+        .btn-g:hover{background:#33FF96;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,255,127,.25)}
+        .btn-ghost{background:transparent;color:var(--G1);border:1px solid var(--B3)}
+        .btn-ghost:hover{background:var(--B1)}
+        .home-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--B1);
+            border-radius:16px;overflow:hidden;max-width:600px;margin:64px auto 0}
+        .hstat{background:var(--CARD);padding:24px;text-align:center}
+        .hstat-n{font-family:var(--HEAD);font-size:32px;font-weight:700;color:var(--G1)}
+        .hstat-l{font-size:12px;color:var(--TX3);margin-top:5px}
+        .home-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+            max-width:860px;margin:52px auto 0;padding:0 28px 64px}
+        .feat{background:var(--CARD);border:1px solid var(--B1);border-radius:16px;padding:24px;transition:all .2s}
         .feat:hover{border-color:var(--B2);transform:translateY(-3px)}
-        .feat-ico{font-size:26px;margin-bottom:12px}
+        .feat-ico{font-size:28px;margin-bottom:12px}
         .feat h3{font-size:14px;font-weight:600;color:var(--TX);margin-bottom:6px}
-        .feat p{font-size:13px;color:var(--TX3);line-height:1.6}
-        .auth-box{background:var(--CARD);border:1px solid var(--B2);border-radius:20px;padding:40px 36px;width:100%;max-width:460px}
+        .feat p{font-size:13px;color:var(--TX3);line-height:1.65}
+
+        /* AUTH */
+        .auth-center{display:flex;align-items:center;justify-content:center;
+            min-height:calc(100vh - 62px);padding:32px 16px;
+            background:radial-gradient(ellipse 500px 500px at 50% 10%,rgba(0,255,127,.05) 0%,transparent 65%)}
+        .auth-box{background:var(--CARD);border:1px solid var(--B2);border-radius:22px;padding:42px 38px;width:100%;max-width:460px}
         .auth-logo{font-family:var(--HEAD);font-size:24px;font-weight:700;color:var(--G1);margin-bottom:6px}
-        .auth-sub{font-size:13px;color:var(--TX2);margin-bottom:28px}
+        .auth-sub{font-size:13px;color:var(--TX2);margin-bottom:30px}
         .fg{margin-bottom:16px}
         .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
         label{display:block;font-size:11px;font-weight:600;color:var(--TX3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-        input,select{width:100%;background:var(--BG3);border:1px solid rgba(0,255,127,.1);border-radius:10px;padding:11px 14px;font-size:14px;color:var(--TX);font-family:var(--SANS);outline:none;transition:border .2s}
+        input,select{width:100%;background:var(--BG3);border:1px solid var(--B1);border-radius:10px;
+            padding:11px 14px;font-size:14px;color:var(--TX);font-family:var(--SANS);outline:none;transition:border .2s}
         input:focus,select:focus{border-color:var(--G3)}
         input::placeholder{color:var(--TX3)}
-        .sbtn{width:100%;background:var(--G1);color:#07110D;border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--HEAD);transition:all .2s;margin-top:6px}
+        select option{background:var(--BG3)}
+        .sbtn{width:100%;background:var(--G1);color:#060F0A;border:none;padding:13px;border-radius:10px;
+            font-size:15px;font-weight:700;cursor:pointer;font-family:var(--HEAD);transition:all .2s;margin-top:6px}
         .sbtn:hover{background:#33FF96;transform:translateY(-1px)}
+        .sbtn:disabled{opacity:.6;cursor:not-allowed;transform:none}
         .auth-sw{text-align:center;margin-top:18px;font-size:13px;color:var(--TX2)}
         .auth-sw a{color:var(--G1);cursor:pointer;font-weight:600}
-        .err-box{background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.25);color:var(--RED);padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none}
-        .err-box.show{display:block}
-        .ok-box{background:var(--B1);border:1px solid var(--B2);color:var(--G1);padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none}
-        .ok-box.show{display:block}
+        .msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none}
+        .msg.show{display:block}
+        .msg-e{background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.25);color:var(--RED)}
+        .msg-s{background:var(--B1);border:1px solid var(--B2);color:var(--G1)}
+
+        /* DASHBOARD */
         #pg-dash{background:var(--BG2)}
-        .dash-wrap{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px)}
-        .sidebar{background:var(--CARD);border-right:1px solid var(--B1);padding:20px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
-        .sb-user{padding:16px 18px 18px;border-bottom:1px solid var(--B1)}
-        .avatar{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--G4),var(--G1));display:flex;align-items:center;justify-content:center;font-family:var(--HEAD);font-size:16px;font-weight:700;color:#07110D;margin-bottom:10px}
+        .dash{display:grid;grid-template-columns:224px 1fr;min-height:calc(100vh - 62px)}
+        .sb{background:var(--CARD);border-right:1px solid var(--B1);
+            position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto}
+        .sb-user{padding:20px 18px;border-bottom:1px solid var(--B1)}
+        .sb-av{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--G4),var(--G1));
+            display:flex;align-items:center;justify-content:center;font-family:var(--HEAD);font-size:17px;font-weight:700;color:#060F0A;margin-bottom:11px}
         .sb-name{font-size:13px;font-weight:600;color:var(--TX)}
-        .sb-email{font-size:11px;color:var(--TX3);margin-top:2px;word-break:break-all}
+        .sb-email{font-size:11px;color:var(--TX3);margin-top:3px;word-break:break-all}
         .sb-nav{padding:14px 10px}
-        .si{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:10px;font-size:13px;color:var(--TX2);cursor:pointer;transition:all .18s;margin-bottom:2px}
-        .si:hover{background:var(--CARD2);color:var(--TX)}
-        .si.act{background:var(--GD);color:var(--G1);font-weight:600}
-        .si-ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
-        .dc{padding:28px 32px}
+        .sni{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:10px;font-size:13px;
+            color:var(--TX2);cursor:pointer;transition:all .15s;margin-bottom:2px}
+        .sni:hover{background:var(--CARD2);color:var(--TX)}
+        .sni.act{background:var(--GD);color:var(--G1);font-weight:600}
+        .sni-ic{font-size:14px;width:20px;text-align:center;flex-shrink:0}
+        .dc{padding:30px 34px}
+        .dc-head{margin-bottom:28px}
         .dc-title{font-family:var(--HEAD);font-size:22px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
-        .dc-sub{font-size:13px;color:var(--TX3);margin-bottom:24px}
-        .cr{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
-        .dc-card{background:var(--CARD);border:1px solid var(--B1);border-radius:14px;padding:20px}
-        .dc-card.hl{border-color:var(--B3);background:var(--CARD2)}
-        .dc-clabel{font-size:11px;color:var(--TX3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-        .dc-cval{font-family:var(--HEAD);font-size:24px;font-weight:700;color:var(--TX);letter-spacing:-.5px}
-        .dc-cval.green{color:var(--G1)}
-        .dc-cval.sm{font-size:15px;font-family:var(--SANS)}
-        .psec{background:var(--CARD);border:1px solid var(--B1);border-radius:16px;padding:24px;margin-bottom:18px}
-        .psec-h{font-family:var(--HEAD);font-size:15px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
-        .psec-sub{font-size:13px;color:var(--TX3);margin-bottom:18px}
-        .save-btn{background:var(--G1);color:#07110D;border:none;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--HEAD);transition:all .18s;white-space:nowrap}
-        .save-btn:hover{background:#33FF96}
-        .ghost-btn{background:var(--CARD2);color:var(--G1);border:1px solid var(--B2);padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--SANS);transition:all .18s;white-space:nowrap}
-        .ghost-btn:hover{background:var(--GD)}
-        .logout-btn{background:rgba(255,77,109,.08);color:var(--RED);border:1px solid rgba(255,77,109,.2);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--SANS);transition:all .18s}
-        .logout-btn:hover{background:rgba(255,77,109,.15)}
-        .tg-btn-prof{display:inline-flex;align-items:center;gap:7px;background:rgba(41,182,246,.1);color:var(--BLUE);border:1px solid rgba(41,182,246,.2);padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s}
-        .tg-btn-prof:hover{background:rgba(41,182,246,.18)}
-        .table-wrap{background:var(--CARD);border:1px solid var(--B1);border-radius:14px;overflow:hidden;margin-bottom:18px}
-        .tw-head,.tw-row{display:grid;padding:11px 16px;font-size:13px;align-items:center}
-        .tw-head{background:var(--BG3);font-size:11px;font-weight:700;color:var(--TX3);text-transform:uppercase;letter-spacing:.5px}
-        .tw-row{border-top:1px solid var(--B1);transition:background .15s}
-        .tw-row:hover{background:var(--CARD2)}
-        .tw-acc .tw-head,.tw-acc .tw-row{grid-template-columns:1fr 120px 150px 44px}
-        .tw-tx  .tw-head,.tw-tx  .tw-row{grid-template-columns:1.5fr 100px 90px 120px 40px}
-        .tw-bud .tw-head,.tw-bud .tw-row{grid-template-columns:1.5fr 120px 120px 100px 40px}
-        .type-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-        .type-badge.INCOME,.type-badge.income{background:rgba(0,255,127,.12);color:var(--G1)}
-        .type-badge.EXPENSE,.type-badge.expense{background:rgba(255,77,109,.12);color:var(--RED)}
-        .del-btn{background:transparent;border:none;color:var(--TX3);font-size:14px;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s}
-        .del-btn:hover{background:rgba(255,77,109,.12);color:var(--RED)}
-        .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .ig-item .ig-label{font-size:11px;color:var(--TX3);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-        .ig-item .ig-val{font-size:14px;color:var(--TX);font-weight:500}
-        .prog-wrap{background:var(--BG3);border-radius:4px;height:5px;overflow:hidden}
-        .prog-bar{height:100%;border-radius:4px;transition:width .4s}
-        /* Category pills */
-        .cat-pills{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0}
-        .cat-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;border:1px solid var(--B1);background:var(--CARD2);font-size:13px;color:var(--TX2);cursor:pointer;transition:all .18s;user-select:none}
-        .cat-pill:hover{border-color:var(--B2);color:var(--TX)}
-        .cat-pill.sel{border-color:var(--G1);background:var(--GD);color:var(--G1);font-weight:600}
-        .cat-pill .px{margin-left:2px;font-size:11px;opacity:.5;line-height:1}
-        .cat-pill .px:hover{opacity:1;color:var(--RED)}
-        .empty-hint{font-size:13px;color:var(--TX3);padding:4px 0}
-        .shimmer{background:linear-gradient(90deg,var(--CARD) 25%,var(--CARD2) 50%,var(--CARD) 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:8px;height:44px}
-        @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
-        .toast{position:fixed;bottom:22px;right:22px;z-index:9999;background:var(--CARD2);border:1px solid var(--B3);color:var(--G1);padding:12px 20px;border-radius:12px;font-size:14px;font-weight:500;transform:translateY(70px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:320px}
+        .dc-sub{font-size:13px;color:var(--TX3)}
+
+        /* Cards */
+        .cg{display:grid;gap:14px;margin-bottom:20px}
+        .cg3{grid-template-columns:repeat(3,1fr)}
+        .cg4{grid-template-columns:repeat(4,1fr)}
+        .sc{background:var(--CARD);border:1px solid var(--B1);border-radius:14px;padding:20px}
+        .sc.hi{border-color:var(--B3);background:var(--CARD2)}
+        .sc-lbl{font-size:11px;color:var(--TX3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+        .sc-val{font-family:var(--HEAD);font-size:22px;font-weight:700;color:var(--TX);letter-spacing:-.3px;word-break:break-word}
+        .sc-val.g{color:var(--G1)}.sc-val.r{color:var(--RED)}.sc-val.a{color:var(--AMBER)}
+        .sc-val.sm{font-size:15px;font-family:var(--SANS);font-weight:500}
+
+        /* Sections */
+        .sec{background:var(--CARD);border:1px solid var(--B1);border-radius:16px;padding:26px;margin-bottom:18px}
+        .sec-h{font-family:var(--HEAD);font-size:15px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
+        .sec-sub{font-size:13px;color:var(--TX3);margin-bottom:22px}
+
+        /* Tables */
+        .tw{background:var(--CARD);border:1px solid var(--B1);border-radius:14px;overflow:hidden}
+        .tw-h{display:grid;padding:11px 18px;background:var(--BG3);font-size:11px;font-weight:700;color:var(--TX3);text-transform:uppercase;letter-spacing:.5px}
+        .tw-r{display:grid;padding:12px 18px;border-top:1px solid var(--B1);font-size:13px;align-items:center;transition:background .15s}
+        .tw-r:hover{background:var(--CARD2)}
+        .g5{grid-template-columns:2fr 1.2fr 1fr 1.1fr .4fr}
+        .g4{grid-template-columns:2fr 1fr 1fr .4fr}
+        .g5b{grid-template-columns:2fr 1fr 1fr 1fr .4fr}
+        .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+        .bg{background:rgba(0,255,127,.12);color:var(--G1)}
+        .br{background:rgba(255,77,109,.12);color:var(--RED)}
+        .ba{background:rgba(255,184,46,.12);color:var(--AMBER)}
+
+        /* Buttons */
+        .sv-btn{background:var(--G1);color:#060F0A;border:none;padding:11px 26px;border-radius:10px;
+            font-size:14px;font-weight:700;cursor:pointer;font-family:var(--HEAD);transition:all .18s}
+        .sv-btn:hover{background:#33FF96}
+        .del-btn{background:transparent;color:var(--TX3);border:none;cursor:pointer;font-size:12px;
+            padding:4px 8px;border-radius:6px;transition:all .15s}
+        .del-btn:hover{color:var(--RED);background:rgba(255,77,109,.1)}
+        .lo-btn{background:rgba(255,77,109,.08);color:var(--RED);border:1px solid rgba(255,77,109,.2);
+            padding:11px 22px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s}
+        .lo-btn:hover{background:rgba(255,77,109,.15)}
+        .ro{background:var(--BG3);border:1px solid var(--B1);border-radius:10px;padding:11px 14px;font-size:14px;color:var(--TX2)}
+        .empty{padding:28px 18px;font-size:13px;color:var(--TX3);text-align:center}
+
+        /* TOAST */
+        .toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--CARD2);
+            border:1px solid var(--B3);color:var(--G1);padding:12px 20px;border-radius:12px;
+            font-size:14px;font-weight:500;transform:translateY(80px);opacity:0;
+            transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:320px}
         .toast.show{transform:translateY(0);opacity:1}
         .toast.terr{border-color:rgba(255,77,109,.3);color:var(--RED)}
-        @media(max-width:700px){
-            .home-h1{font-size:32px}.feats,.stats-row{grid-template-columns:1fr}
-            .dash-wrap{grid-template-columns:1fr}.sidebar{position:relative;height:auto}
-            .cr{grid-template-columns:1fr}.frow{grid-template-columns:1fr}
-            nav{padding:0 14px}.auth-box{padding:24px 16px}.dc{padding:16px 14px}
-            .tw-acc .tw-head,.tw-acc .tw-row{grid-template-columns:1fr 100px 44px}
-            .tw-acc .tw-head>:nth-child(2),.tw-acc .tw-row>:nth-child(2){display:none}
+
+        /* RESPONSIVE */
+        @media(max-width:720px){
+            .home-h1{font-size:36px;letter-spacing:-1px}
+            .home-feats,.home-stats,.cg3,.cg4{grid-template-columns:1fr}
+            .dash{grid-template-columns:1fr}
+            .sb{position:relative;height:auto;top:0}
+            .frow{grid-template-columns:1fr}
+            nav{padding:0 14px}.ntab{padding:6px 10px;font-size:12px}
+            .auth-box{padding:28px 20px}.dc{padding:18px 16px}
+            .g5,.g4,.g5b{grid-template-columns:1.5fr 1fr 1fr}
+            .g5>:nth-child(2),.g5b>:nth-child(2),.g4>:nth-child(2){display:none}
         }
     </style>
 </head>
 <body>
 
-<div id="loader"><div class="loader-logo">baiy.kz</div></div>
+<!-- LOADER -->
+<div id="loader"><div class="ld-ring"></div><div class="ld-txt">baiy.kz</div></div>
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- NAV -->
 <nav>
-    <div class="logo" onclick="nav('home')">baiy<em>.kz</em></div>
-    <div class="nav-right" id="nav-right"></div>
+    <div class="logo" onclick="goPage('home')">baiy<em>.kz</em></div>
+    <div class="nav-r" id="nav-r"></div>
 </nav>
 
 <!-- HOME -->
 <div class="pg act" id="pg-home">
-    <div class="home-inner">
-        <div class="badge"><div class="dot-pulse"></div>Финансовый трекер 2026</div>
-        <h1 class="home-h1">Твои деньги под<br><span class="hi">полным контролем</span></h1>
-        <p class="home-p">Веди бюджет, отслеживай доходы и расходы, ставь финансовые цели — просто и удобно.</p>
-        <div class="hbtns">
-            <button class="btn btn-g" onclick="nav('register')">Начать бесплатно</button>
-            <button class="btn btn-outline" onclick="nav('login')">Войти в аккаунт</button>
+    <div class="home-wrap">
+        <div class="home-badge"><div class="dot"></div>Финансовый трекер 2026</div>
+        <h1 class="home-h1">Твои деньги под<br><span class="accent">полным контролем</span></h1>
+        <p class="home-p">Ведите бюджет, отслеживайте доходы и расходы — просто, удобно, на одном экране.</p>
+        <div class="home-btns">
+            <button class="btn btn-g"    onclick="goPage('register')">Начать бесплатно</button>
+            <button class="btn btn-ghost" onclick="goPage('login')">Войти в аккаунт</button>
         </div>
-        <div class="stats-row">
-            <div class="stat"><div class="stat-n">5K+</div><div class="stat-l">Пользователей</div></div>
-            <div class="stat"><div class="stat-n">₸1B+</div><div class="stat-l">Отслежено</div></div>
-            <div class="stat"><div class="stat-n">4.9★</div><div class="stat-l">Рейтинг</div></div>
+        <div class="home-stats">
+            <div class="hstat"><div class="hstat-n">5K+</div><div class="hstat-l">Пользователей</div></div>
+            <div class="hstat"><div class="hstat-n">₸1B+</div><div class="hstat-l">Отслежено</div></div>
+            <div class="hstat"><div class="hstat-n">4.9★</div><div class="hstat-l">Рейтинг</div></div>
         </div>
     </div>
-    <div class="feats">
-        <div class="feat"><div class="feat-ico">💰</div><h3>Бюджет-трекер</h3><p>Учёт доходов и расходов по категориям</p></div>
-        <div class="feat"><div class="feat-ico">📊</div><h3>Аналитика</h3><p>Графики и статистика за любой период</p></div>
-        <div class="feat"><div class="feat-ico">🎯</div><h3>Финансовые цели</h3><p>Ставь цели и следи за прогрессом</p></div>
+    <div class="home-feats">
+        <div class="feat"><div class="feat-ico">🏦</div><h3>Счета</h3><p>Создавайте счета и отслеживайте баланс в реальном времени</p></div>
+        <div class="feat"><div class="feat-ico">↕</div><h3>Транзакции</h3><p>Записывайте доходы и расходы с категориями</p></div>
+        <div class="feat"><div class="feat-ico">🎯</div><h3>Бюджеты</h3><p>Устанавливайте лимиты расходов по категориям</p></div>
     </div>
 </div>
 
 <!-- LOGIN -->
-<div class="pg flex-center" id="pg-login">
-    <div class="auth-box">
-        <div class="auth-logo">baiy.kz</div>
-        <div class="auth-sub">Войдите в аккаунт</div>
-        <div class="err-box" id="le"></div>
-        <div class="fg"><label>Email *</label><input type="email" id="l-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <div class="fg"><label>Пароль *</label><input type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <button class="sbtn" onclick="doLogin()">Войти →</button>
-        <div class="auth-sw">Нет аккаунта? <a onclick="nav('register')">Зарегистрироваться</a></div>
+<div class="pg" id="pg-login">
+    <div class="auth-center">
+        <div class="auth-box">
+            <div class="auth-logo">baiy.kz</div>
+            <div class="auth-sub">Войдите в свой аккаунт</div>
+            <div class="msg msg-e" id="l-err"></div>
+            <div class="fg"><label>Email *</label>
+                <input type="email" id="l-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+            <div class="fg"><label>Пароль *</label>
+                <input type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+            <button class="sbtn" id="l-btn" onclick="doLogin()">Войти →</button>
+            <div class="auth-sw">Нет аккаунта? <a onclick="goPage('register')">Зарегистрироваться</a></div>
+        </div>
     </div>
 </div>
 
 <!-- REGISTER -->
-<div class="pg flex-center" id="pg-register">
-    <div class="auth-box" style="max-width:500px">
-        <div class="auth-logo">baiy.kz</div>
-        <div class="auth-sub">Создайте аккаунт — это бесплатно</div>
-        <div class="err-box" id="re"></div>
-        <div class="frow">
-            <div class="fg"><label>Фамилия *</label><input type="text" id="r-ln" placeholder="Иванов"></div>
-            <div class="fg"><label>Имя *</label><input type="text" id="r-fn" placeholder="Иван"></div>
+<div class="pg" id="pg-register">
+    <div class="auth-center">
+        <div class="auth-box">
+            <div class="auth-logo">baiy.kz</div>
+            <div class="auth-sub">Создайте аккаунт — это бесплатно</div>
+            <div class="msg msg-e" id="r-err"></div>
+            <div class="frow">
+                <div class="fg"><label>Фамилия *</label>
+                    <input type="text" id="r-ln" placeholder="Иванов"></div>
+                <div class="fg"><label>Имя *</label>
+                    <input type="text" id="r-fn" placeholder="Иван"></div>
+            </div>
+            <div class="fg"><label>Email *</label>
+                <input type="email" id="r-em" placeholder="you@example.com"></div>
+            <div class="fg"><label>Пароль * (мин. 6 символов)</label>
+                <input type="password" id="r-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doRegister()"></div>
+            <button class="sbtn" id="r-btn" onclick="doRegister()">Создать аккаунт →</button>
+            <div class="auth-sw">Уже есть аккаунт? <a onclick="goPage('login')">Войти</a></div>
         </div>
-        <div class="fg"><label>Отчество</label><input type="text" id="r-mn" placeholder="Иванович (необязательно)"></div>
-        <div class="fg"><label>Email *</label><input type="email" id="r-em" placeholder="you@example.com"></div>
-        <div class="fg"><label>Пароль * (мин. 6 символов)</label><input type="password" id="r-pw" placeholder="••••••••"></div>
-        <div class="frow">
-            <div class="fg"><label>Зарплата (₸/мес)</label><input type="number" id="r-sl" placeholder="300000" min="0"></div>
-            <div class="fg"><label>Telegram (@username)</label><input type="text" id="r-tg" placeholder="@username"></div>
-        </div>
-        <button class="sbtn" onclick="doRegister()">Создать аккаунт →</button>
-        <div class="auth-sw">Уже есть аккаунт? <a onclick="nav('login')">Войти</a></div>
     </div>
 </div>
 
 <!-- DASHBOARD -->
-<div class="pg" id="pg-dash" style="display:none">
-    <div class="dash-wrap">
-        <div class="sidebar">
+<div class="pg" id="pg-dash">
+    <div class="dash">
+        <!-- SIDEBAR -->
+        <div class="sb">
             <div class="sb-user">
-                <div class="avatar" id="sb-av">?</div>
-                <div class="sb-name" id="sb-nm">—</div>
+                <div class="sb-av"    id="sb-av">?</div>
+                <div class="sb-name"  id="sb-nm">—</div>
                 <div class="sb-email" id="sb-em">—</div>
             </div>
             <div class="sb-nav">
-                <div class="si act" id="si-ov" onclick="dtab('overview')">    <span class="si-ico">◈</span> Обзор</div>
-                <div class="si"     id="si-ac" onclick="dtab('accounts')">    <span class="si-ico">🏦</span> Счета</div>
-                <div class="si"     id="si-tr" onclick="dtab('transactions')"><span class="si-ico">↕</span> Транзакции</div>
-                <div class="si"     id="si-bu" onclick="dtab('budgets')">     <span class="si-ico">🎯</span> Бюджеты</div>
-                <div class="si"     id="si-ca" onclick="dtab('categories')">  <span class="si-ico">🏷</span> Категории</div>
-                <div class="si"     id="si-to" onclick="dtab('tools')">       <span class="si-ico">📊</span> Калькулятор</div>
-                <div class="si"     id="si-pr" onclick="dtab('profile')">     <span class="si-ico">◉</span> Профиль</div>
+                <div class="sni act" id="sn-ov" onclick="dtab('ov')"><span class="sni-ic">◈</span>Обзор</div>
+                <div class="sni"     id="sn-ac" onclick="dtab('ac')"><span class="sni-ic">🏦</span>Счета</div>
+                <div class="sni"     id="sn-tx" onclick="dtab('tx')"><span class="sni-ic">↕</span>Транзакции</div>
+                <div class="sni"     id="sn-bg" onclick="dtab('bg')"><span class="sni-ic">🎯</span>Бюджеты</div>
+                <div class="sni"     id="sn-ct" onclick="dtab('ct')"><span class="sni-ic">🏷</span>Категории</div>
+                <div class="sni"     id="sn-cl" onclick="dtab('cl')"><span class="sni-ic">🧮</span>Калькулятор</div>
+                <div class="sni"     id="sn-pr" onclick="dtab('pr')"><span class="sni-ic">◉</span>Профиль</div>
             </div>
         </div>
 
+        <!-- MAIN CONTENT -->
         <div class="dc">
 
             <!-- OVERVIEW -->
-            <div id="dt-overview">
-                <div class="dc-title" id="d-greet">Привет!</div>
-                <div class="dc-sub" id="d-date2"></div>
-                <div class="cr">
-                    <div class="dc-card hl"><div class="dc-clabel">Общий баланс</div><div class="dc-cval green" id="d-balance">—</div></div>
-                    <div class="dc-card"><div class="dc-clabel">Telegram</div><div class="dc-cval sm" id="d-tg">—</div></div>
-                    <div class="dc-card"><div class="dc-clabel">Дней с регистрации</div><div class="dc-cval sm" id="d-since">—</div></div>
+            <div id="dt-ov">
+                <div class="dc-head">
+                    <div class="dc-title" id="ov-greet">Добро пожаловать!</div>
+                    <div class="dc-sub"   id="ov-date"></div>
                 </div>
-                <div class="psec">
-                    <div class="psec-h">Персональные данные</div>
-                    <div class="psec-sub">Ваш профиль</div>
-                    <div class="info-grid">
-                        <div class="ig-item"><div class="ig-label">ФИО</div><div class="ig-val" id="d-fio">—</div></div>
-                        <div class="ig-item"><div class="ig-label">Email</div><div class="ig-val" id="d-email">—</div></div>
-                        <div class="ig-item"><div class="ig-label">Telegram</div><div class="ig-val" id="d-tg2">—</div></div>
-                        <div class="ig-item"><div class="ig-label">Дата регистрации</div><div class="ig-val" id="d-reg">—</div></div>
-                    </div>
+                <div class="cg cg3">
+                    <div class="sc hi"><div class="sc-lbl">Общий баланс</div><div class="sc-val g" id="ov-bal">₸ 0</div></div>
+                    <div class="sc"><div class="sc-lbl">Счетов</div><div class="sc-val" id="ov-acc">0</div></div>
+                    <div class="sc"><div class="sc-lbl">Транзакций</div><div class="sc-val" id="ov-txn">0</div></div>
+                </div>
+                <div style="font-size:11px;font-weight:700;color:var(--TX3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;margin-top:4px">
+                    📅 Текущий месяц — <span id="ov-month-name"></span>
+                </div>
+                <div class="cg cg3" style="margin-bottom:8px">
+                    <div class="sc"><div class="sc-lbl">Доходы за месяц</div><div class="sc-val g" id="ov-inc-m">₸ 0</div></div>
+                    <div class="sc"><div class="sc-lbl">Расходы за месяц</div><div class="sc-val r" id="ov-exp-m">₸ 0</div></div>
+                    <div class="sc"><div class="sc-lbl">Баланс за месяц</div><div class="sc-val" id="ov-net-m">₸ 0</div></div>
+                </div>
+                <div style="font-size:11px;font-weight:700;color:var(--TX3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">
+                    📆 Текущий год — <span id="ov-year-name"></span>
+                </div>
+                <div class="cg cg3">
+                    <div class="sc"><div class="sc-lbl">Доходы за год</div><div class="sc-val g" id="ov-inc-y">₸ 0</div></div>
+                    <div class="sc"><div class="sc-lbl">Расходы за год</div><div class="sc-val r" id="ov-exp-y">₸ 0</div></div>
+                    <div class="sc"><div class="sc-lbl">Активных бюджетов</div><div class="sc-val a" id="ov-bud">0</div></div>
+                </div>
+                <div style="font-size:11px;font-weight:700;color:var(--TX3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;margin-top:20px">
+                    🏷 Расходы по категориям
+                </div>
+                <div class="sec" style="padding:18px 22px">
+                    <div id="ov-cats-chart"><div class="empty">Нет данных</div></div>
                 </div>
             </div>
 
             <!-- ACCOUNTS -->
-            <div id="dt-accounts" style="display:none">
-                <div class="dc-title">Счета</div>
-                <div class="dc-sub">Ваши финансовые счета</div>
-                <div class="psec">
-                    <div class="psec-h">Добавить счёт</div>
-                    <div class="psec-sub">Создайте счёт для учёта средств</div>
-                    <div class="err-box" id="ace"></div>
+            <div id="dt-ac" style="display:none">
+                <div class="dc-head"><div class="dc-title">Счета</div><div class="dc-sub">Ваши финансовые счета</div></div>
+                <div class="sec">
+                    <div class="sec-h">Добавить счёт</div>
+                    <div class="sec-sub">Создайте счёт для учёта средств</div>
+                    <div class="msg msg-e" id="ac-err"></div>
                     <div class="frow">
                         <div class="fg"><label>Название *</label><input type="text" id="ac-name" placeholder="Основной счёт"></div>
                         <div class="fg"><label>Тип</label>
                             <select id="ac-type">
-                                <option>Наличные</option><option>Карта</option>
-                                <option>Сбережения</option><option>Инвестиции</option>
-                            </select>
-                        </div>
+                                <option value="CASH">Наличные</option>
+                                <option value="CARD">Карта</option>
+                                <option value="SAVINGS">Накопления</option>
+                                <option value="INVESTMENT">Инвестиции</option>
+                            </select></div>
                     </div>
-                    <div class="fg" style="max-width:240px"><label>Начальный баланс (₸)</label><input type="number" id="ac-bal" placeholder="0" min="0" value="0"></div>
-                    <button class="save-btn" onclick="addAccount()">+ Создать счёт</button>
+                    <div class="fg" style="max-width:260px">
+                        <label>Начальный баланс (₸)</label>
+                        <input type="number" id="ac-bal" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <button class="sv-btn" onclick="createAccount()">+ Создать счёт</button>
                 </div>
-                <div class="table-wrap tw-acc">
-                    <div class="tw-head"><div>Название</div><div>Тип</div><div>Баланс</div><div></div></div>
-                    <div id="ac-list"><div class="shimmer" style="margin:12px"></div></div>
+                <div class="tw">
+                    <div class="tw-h g4"><div>Название</div><div>Тип</div><div>Баланс</div><div></div></div>
+                    <div id="ac-list"></div>
                 </div>
             </div>
 
             <!-- TRANSACTIONS -->
-            <div id="dt-transactions" style="display:none">
-                <div class="dc-title">Транзакции</div>
-                <div class="dc-sub">История доходов и расходов</div>
-                <div class="psec">
-                    <div class="psec-h">Новая транзакция</div>
+            <div id="dt-tx" style="display:none">
+                <div class="dc-head"><div class="dc-title">Транзакции</div><div class="dc-sub">История доходов и расходов</div></div>
+                <div class="sec">
+                    <div class="sec-h">Добавить транзакцию</div>
+                    <div class="sec-sub">Заполните поля и нажмите кнопку</div>
+                    <div class="msg msg-e" id="tx-err"></div>
                     <div class="frow">
-                        <div class="fg"><label>Счёт *</label><select id="tx-acc"><option value="">— загрузка... —</option></select></div>
+                        <div class="fg"><label>Сумма (₸) *</label><input type="number" id="tx-amt" placeholder="5000" min="0.01" step="0.01"></div>
                         <div class="fg"><label>Тип *</label>
-                            <select id="tx-type" onchange="onTxTypeChange()">
-                                <option value="EXPENSE">Расход</option>
+                            <select id="tx-type">
                                 <option value="INCOME">Доход</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="fg">
-                        <label>Категория <span style="text-transform:none;font-weight:400;color:var(--TX3)">(нажми на нужную)</span></label>
-                        <div id="tx-cat-pills" class="cat-pills"></div>
-                        <input type="hidden" id="tx-cat-id">
+                                <option value="EXPENSE">Расход</option>
+                            </select></div>
                     </div>
                     <div class="frow">
-                        <div class="fg"><label>Описание *</label><input type="text" id="tx-desc" placeholder="Продукты, зарплата..."></div>
-                        <div class="fg"><label>Сумма ₸ *</label><input type="number" id="tx-amt" placeholder="1000" min="1"></div>
+                        <div class="fg"><label>Счёт *</label><select id="tx-acc"><option value="">— выберите —</option></select></div>
+                        <div class="fg"><label>Категория</label><select id="tx-cat"><option value="">— без категории —</option></select></div>
                     </div>
-                    <div class="fg" style="max-width:200px"><label>Дата</label><input type="date" id="tx-date"></div>
-                    <button class="save-btn" onclick="addTx()">+ Добавить транзакцию</button>
+                    <div class="frow">
+                        <div class="fg"><label>Описание</label><input type="text" id="tx-desc" placeholder="Супермаркет..."></div>
+                        <div class="fg"><label>Дата</label><input type="date" id="tx-date"></div>
+                    </div>
+                    <button class="sv-btn" onclick="createTransaction()">+ Добавить транзакцию</button>
                 </div>
-                <div class="table-wrap tw-tx">
-                    <div class="tw-head"><div>Описание</div><div>Дата</div><div>Тип</div><div>Сумма</div><div></div></div>
-                    <div id="tx-list"><div class="shimmer" style="margin:12px"></div></div>
+                <div class="tw">
+                    <div class="tw-h g5"><div>Описание</div><div>Дата</div><div>Тип</div><div>Сумма</div><div></div></div>
+                    <div id="tx-list"></div>
                 </div>
             </div>
 
             <!-- BUDGETS -->
-            <div id="dt-budgets" style="display:none">
-                <div class="dc-title">Бюджеты</div>
-                <div class="dc-sub">Лимиты расходов по категориям</div>
-                <div class="psec">
-                    <div class="psec-h">Создать бюджет</div>
-                    <div class="psec-sub">Установите лимит расходов на период</div>
-                    <div class="err-box" id="bue"></div>
-                    <div class="fg">
-                        <label>Категория расходов <span style="text-transform:none;font-weight:400;color:var(--TX3)">(нажми для выбора)</span></label>
-                        <div id="bu-cat-pills" class="cat-pills"></div>
-                        <input type="hidden" id="bu-cat-id">
-                    </div>
+            <div id="dt-bg" style="display:none">
+                <div class="dc-head"><div class="dc-title">Бюджеты</div><div class="dc-sub">Лимиты расходов по категориям</div></div>
+                <div class="sec">
+                    <div class="sec-h">Создать бюджет</div>
+                    <div class="sec-sub">Установите лимит расходов на период</div>
+                    <div class="msg msg-e" id="bg-err"></div>
                     <div class="frow">
-                        <div class="fg"><label>Лимит (₸) *</label><input type="number" id="bu-lim" placeholder="50000" min="1"></div>
-                        <div class="fg"><label>Период</label>
-                            <select id="bu-per">
-                                <option value="MONTH">Месяц</option>
-                                <option value="WEEK">Неделя</option>
-                                <option value="YEAR">Год</option>
-                            </select>
-                        </div>
+                        <div class="fg"><label>Категория *</label><select id="bg-cat"><option value="">— выберите —</option></select></div>
+                        <div class="fg"><label>Лимит (₸) *</label><input type="number" id="bg-lmt" placeholder="50000" min="1" step="0.01"></div>
                     </div>
-                    <button class="save-btn" onclick="addBudget()">+ Создать бюджет</button>
+                    <div class="fg" style="max-width:260px">
+                        <label>Период</label>
+                        <select id="bg-period">
+                            <option value="MONTHLY">Месяц</option>
+                            <option value="WEEKLY">Неделя</option>
+                            <option value="YEARLY">Год</option>
+                        </select>
+                    </div>
+                    <button class="sv-btn" onclick="createBudget()">+ Создать бюджет</button>
                 </div>
-                <div class="table-wrap tw-bud">
-                    <div class="tw-head"><div>Категория</div><div>Лимит</div><div>Потрачено</div><div>Прогресс</div><div></div></div>
-                    <div id="bu-list"><div class="shimmer" style="margin:12px"></div></div>
+                <div class="tw">
+                    <div class="tw-h g5b"><div>Категория</div><div>Лимит</div><div>Потрачено</div><div>Период</div><div></div></div>
+                    <div id="bg-list"></div>
                 </div>
             </div>
 
             <!-- CATEGORIES -->
-            <div id="dt-categories" style="display:none">
-                <div class="dc-title">Категории</div>
-                <div class="dc-sub">Управляйте категориями транзакций</div>
-                <div class="psec">
-                    <div class="psec-h">Добавить категорию</div>
-                    <div class="psec-sub">Создайте новую или загрузите 12 стандартных</div>
-                    <div class="err-box" id="cae"></div>
+            <div id="dt-ct" style="display:none">
+                <div class="dc-head"><div class="dc-title">Категории</div><div class="dc-sub">Управляйте категориями транзакций</div></div>
+                <div class="sec">
+                    <div class="sec-h">Добавить категорию</div>
+                    <div class="sec-sub">Создайте свою категорию</div>
+                    <div class="msg msg-e" id="ct-err"></div>
                     <div class="frow">
-                        <div class="fg"><label>Название *</label><input type="text" id="ca-name" placeholder="Продукты"></div>
+                        <div class="fg"><label>Название *</label><input type="text" id="ct-name" placeholder="Продукты"></div>
                         <div class="fg"><label>Тип *</label>
-                            <select id="ca-type">
+                            <select id="ct-type">
                                 <option value="EXPENSE">Расход</option>
                                 <option value="INCOME">Доход</option>
-                            </select>
-                        </div>
+                            </select></div>
                     </div>
                     <div class="frow">
-                        <div class="fg"><label>Иконка (emoji)</label><input type="text" id="ca-icon" placeholder="🛒" maxlength="4"></div>
-                        <div class="fg"><label>Цвет (HEX)</label><input type="text" id="ca-color" placeholder="#00FF7F" maxlength="7"></div>
+                        <div class="fg"><label>Иконка (emoji)</label><input type="text" id="ct-icon" placeholder="🛒" maxlength="4"></div>
+                        <div class="fg"><label>Цвет (hex)</label><input type="text" id="ct-color" placeholder="#00FF7F" maxlength="7"></div>
                     </div>
-                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
-                        <button class="save-btn" onclick="addCategory()">+ Добавить</button>
-                        <button class="ghost-btn" id="defbtn" onclick="loadDefaultCategories(this)">⚡ Загрузить стандартные (12 шт)</button>
-                    </div>
+                    <button class="sv-btn" onclick="createCategory()">+ Добавить категорию</button>
+                    <button onclick="seedDefaultCategories()" style="background:transparent;color:var(--TX2);border:1px solid var(--B1);padding:11px 20px;border-radius:10px;font-size:13px;cursor:pointer;font-family:var(--SANS);margin-left:10px">🏷 Стандартные</button>
                 </div>
-                <div class="psec">
-                    <div class="psec-h" style="margin-bottom:14px">📤 Расходы</div>
-                    <div id="ca-expense" class="cat-pills"><span class="empty-hint">Нет категорий</span></div>
-                </div>
-                <div class="psec">
-                    <div class="psec-h" style="margin-bottom:14px">📥 Доходы</div>
-                    <div id="ca-income" class="cat-pills"><span class="empty-hint">Нет категорий</span></div>
-                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px" id="ct-grid"></div>
             </div>
 
             <!-- CALCULATOR -->
-            <div id="dt-tools" style="display:none">
-                <div class="dc-title">Калькулятор</div>
-                <div class="dc-sub">Сложный процент — сколько вырастут деньги</div>
-                <div class="psec">
-                    <div class="psec-h">Параметры</div>
+            <div id="dt-cl" style="display:none">
+                <div class="dc-head"><div class="dc-title">Калькулятор</div><div class="dc-sub">Сложный процент — рост ваших сбережений</div></div>
+                <div class="sec">
+                    <div class="sec-h">Параметры расчёта</div>
                     <div class="frow">
-                        <div class="fg"><label>Начальная сумма (₸)</label><input type="number" id="c-p" value="500000" oninput="calcUpd()"></div>
-                        <div class="fg"><label>Взнос в месяц (₸)</label><input type="number" id="c-c" value="50000" oninput="calcUpd()"></div>
+                        <div class="fg"><label>Начальная сумма (₸)</label><input type="number" id="cl-p" value="500000" oninput="calcUpd()"></div>
+                        <div class="fg"><label>Взнос в месяц (₸)</label><input type="number" id="cl-c" value="50000" oninput="calcUpd()"></div>
                     </div>
                     <div class="frow">
-                        <div class="fg"><label>Доходность в год (%)</label><input type="number" id="c-r" value="12" oninput="calcUpd()"></div>
-                        <div class="fg"><label>Срок (лет)</label><input type="number" id="c-y" value="10" oninput="calcUpd()"></div>
+                        <div class="fg"><label>Доходность в год (%)</label><input type="number" id="cl-r" value="12" oninput="calcUpd()"></div>
+                        <div class="fg"><label>Срок (лет)</label><input type="number" id="cl-y" value="10" oninput="calcUpd()"></div>
                     </div>
-                    <div style="background:var(--GD);border:1px solid var(--B3);border-radius:12px;padding:20px;margin-top:6px">
-                        <div style="font-size:11px;font-weight:700;color:var(--G1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Итоговая сумма</div>
-                        <div id="c-res" style="font-family:var(--HEAD);font-size:32px;font-weight:700;color:var(--G1)">—</div>
-                        <div id="c-sub" style="font-size:13px;color:var(--TX2);margin-top:5px">—</div>
+                    <div style="background:var(--GD);border:1px solid var(--B3);border-radius:12px;padding:22px;margin-top:8px">
+                        <div style="font-size:11px;font-weight:700;color:var(--G1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Итоговая сумма</div>
+                        <div id="cl-res" style="font-family:var(--HEAD);font-size:36px;font-weight:700;color:var(--G1)">—</div>
+                        <div id="cl-sub" style="font-size:13px;color:var(--TX2);margin-top:6px">—</div>
                     </div>
                 </div>
             </div>
 
             <!-- PROFILE -->
-            <div id="dt-profile" style="display:none">
-                <div class="dc-title">Мой профиль</div>
-                <div class="dc-sub">Изменяйте данные в любое время</div>
-                <div class="psec">
-                    <div class="psec-h">ФИО и контакты</div>
-                    <div class="psec-sub">Поля со * обязательны</div>
-                    <div class="err-box" id="pe"></div>
-                    <div class="ok-box" id="po"></div>
-                    <div class="frow">
-                        <div class="fg"><label>Фамилия *</label><input type="text" id="p-ln" placeholder="Иванов"></div>
-                        <div class="fg"><label>Имя *</label><input type="text" id="p-fn" placeholder="Иван"></div>
+            <div id="dt-pr" style="display:none">
+                <div class="dc-head"><div class="dc-title">Профиль</div><div class="dc-sub">Данные вашего аккаунта</div></div>
+                <div class="sec">
+                    <div class="sec-h">Информация об аккаунте</div>
+                    <div class="sec-sub">Имя и email</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px">
+                        <div><label style="margin-bottom:6px">Имя</label><div class="ro" id="pr-nm">—</div></div>
+                        <div><label style="margin-bottom:6px">Email</label><div class="ro" id="pr-em">—</div></div>
                     </div>
-                    <div class="fg"><label>Отчество</label><input type="text" id="p-mn" placeholder="Иванович"></div>
-                    <div class="frow">
-                        <div class="fg"><label>Зарплата (₸/мес)</label><input type="number" id="p-sl" placeholder="300000" min="0"></div>
-                        <div class="fg"><label>Telegram (@username)</label><input type="text" id="p-tg" placeholder="@username"></div>
-                    </div>
-                    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px">
-                        <button class="save-btn" onclick="saveProfile()">💾 Сохранить</button>
-                        <a class="tg-btn-prof" href="https://t.me/" target="_blank" id="tg-link-prof">
-                            <svg style="width:15px;height:15px;fill:#29B6F6" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.012 9.485c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.736z"/></svg>
-                            Написать в Telegram
-                        </a>
-                    </div>
-                </div>
-                <div class="psec">
-                    <div class="psec-h">Аккаунт</div>
-                    <div class="psec-sub">Email используется для входа и не меняется</div>
-                    <div style="background:var(--BG3);border:1px solid var(--B1);border-radius:10px;padding:11px 14px;font-size:14px;color:var(--TX2);margin-bottom:16px" id="p-email-ro">—</div>
-                    <button class="logout-btn" onclick="doLogout()">Выйти из аккаунта</button>
+                    <button class="lo-btn" onclick="doLogout()">Выйти из аккаунта</button>
                 </div>
             </div>
 
         </div><!-- /dc -->
-    </div><!-- /dash-wrap -->
+    </div><!-- /dash -->
 </div><!-- /pg-dash -->
 
 <script>
-    // ─── STATE ────────────────────────────────────────────
-    const API='/api';
-    let TOKEN=localStorage.getItem('bw_token');
-    let USER=JSON.parse(localStorage.getItem('bw_user')||'null');
-    let CATS=[];   // always array, loaded on demand
+    'use strict';
+    const API = '/api';
+    let TOKEN    = localStorage.getItem('bw_tok') || null;
+    let ME       = JSON.parse(localStorage.getItem('bw_me') || 'null');
+    let ACCOUNTS = [], TXNS = [], CATS = [], BUDGETS = [];
 
-    const DEFAULTS=[
-        {name:'Продукты',    type:'EXPENSE',icon:'🛒',color:'#FF6B6B'},
-        {name:'Транспорт',   type:'EXPENSE',icon:'🚗',color:'#4ECDC4'},
-        {name:'Рестораны',   type:'EXPENSE',icon:'🍔',color:'#FFE66D'},
-        {name:'Здоровье',    type:'EXPENSE',icon:'💊',color:'#A8E6CF'},
-        {name:'Одежда',      type:'EXPENSE',icon:'👗',color:'#C3A6FF'},
-        {name:'Развлечения', type:'EXPENSE',icon:'🎮',color:'#FF8B94'},
-        {name:'ЖКХ / Аренда',type:'EXPENSE',icon:'🏠',color:'#97C1A9'},
-        {name:'Связь',       type:'EXPENSE',icon:'📱',color:'#B5EAD7'},
-        {name:'Образование', type:'EXPENSE',icon:'📚',color:'#FFDAC1'},
-        {name:'Зарплата',    type:'INCOME', icon:'💰',color:'#00FF7F'},
-        {name:'Фриланс',     type:'INCOME', icon:'💻',color:'#00E5FF'},
-        {name:'Инвестиции',  type:'INCOME', icon:'📈',color:'#69F0AE'},
-    ];
-
-    // ─── INIT ─────────────────────────────────────────────
-    window.addEventListener('load',()=>{
-        setTimeout(()=>{ const l=document.getElementById('loader'); l.style.opacity='0'; setTimeout(()=>l.style.display='none',350); },600);
-        const txd=document.getElementById('tx-date');
-        if(txd) txd.value=new Date().toISOString().slice(0,10);
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const l = document.getElementById('loader');
+            l.style.opacity = '0';
+            setTimeout(() => l.style.display = 'none', 400);
+        }, 700);
         buildNav();
-        if(TOKEN&&USER){ fillDash(USER); showPg('dash'); }
-        else showPg('home');
-        setInterval(updateDate,1000); updateDate(); calcUpd();
+        if (TOKEN && ME) { fillSidebar(ME); goPage('dash'); loadAll(); }
+        else goPage('home');
+        setInterval(() => {
+            const el = document.getElementById('ov-date');
+            if (el) el.textContent = new Date().toLocaleString('ru-RU',
+                {weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+        }, 1000);
+        calcUpd();
+        const dt = document.getElementById('tx-date');
+        if (dt) dt.value = new Date().toISOString().slice(0,10);
     });
 
-    function updateDate(){
-        const el=document.getElementById('d-date2');
-        if(el) el.textContent=new Date().toLocaleString('ru-RU',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    }
-
-    // ─── NAV ──────────────────────────────────────────────
-    function nav(pg){ showPg(pg); }
-
-    function showPg(name){
-        document.querySelectorAll('.pg').forEach(p=>{ p.classList.remove('act'); p.style.display='none'; });
-        const el=document.getElementById('pg-'+name); if(!el) return;
-        el.style.display=''; void el.offsetWidth; el.classList.add('act');
-        if(name==='login'||name==='register')
-            el.style.cssText='display:flex;align-items:center;justify-content:center;min-height:100vh;padding-top:60px;background:var(--BG)';
+    function goPage(name) {
+        document.querySelectorAll('.pg').forEach(p => { p.classList.remove('act'); p.style.display='none'; });
+        const el = document.getElementById('pg-'+name);
+        if (!el) return;
+        el.style.display='';
+        void el.offsetWidth;
+        el.classList.add('act');
         buildNav();
     }
 
-    const TABS=['overview','accounts','transactions','budgets','categories','tools','profile'];
-    const SID ={overview:'ov',accounts:'ac',transactions:'tr',budgets:'bu',categories:'ca',tools:'to',profile:'pr'};
-
-    function dtab(name){
-        TABS.forEach(t=>{
-            const e=document.getElementById('dt-'+t); if(e) e.style.display=t===name?'':'none';
-            const s=document.getElementById('si-'+SID[t]); if(s) s.classList.toggle('act',t===name);
-        });
-        if(name==='accounts')     loadAccounts();
-        if(name==='categories')   loadCats(true);
-        if(name==='transactions') fetchCats().then(()=>{ fillTxPills(); fillAccSel(); loadTransactions(); });
-        if(name==='budgets')      fetchCats().then(()=>{ fillBuPills(); loadBudgets(); });
-        if(name==='profile')      fillProfileForm(USER);
-    }
-
-    function buildNav(){
-        const el=document.getElementById('nav-right');
-        if(TOKEN&&USER){
-            const h=(USER.telegram||'').replace('@','');
-            el.innerHTML=`
-      <button class="ntab act" onclick="nav('dash')">◈ Кабинет</button>
-      <a class="ntab tg" href="${h?'https://t.me/'+h:'https://t.me/'}" target="_blank">
-        <svg style="width:14px;height:14px;fill:#29B6F6" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.012 9.485c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.736z"/></svg>
-        Telegram
-      </a>
-      <button class="ntab logout" onclick="doLogout()">Выйти</button>`;
+    function buildNav() {
+        const el = document.getElementById('nav-r');
+        const tg = `<svg style="width:14px;height:14px;fill:#29B6F6" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.012 9.485c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.736z"/></svg>`;
+        if (TOKEN && ME) {
+            el.innerHTML = `
+      <button class="ntab act" onclick="goPage('dash')">◈ Кабинет</button>
+      <a class="ntab tg" href="https://t.me/baiy_kz" target="_blank">${tg} Telegram</a>
+      <button class="ntab out" onclick="doLogout()">Выйти</button>`;
         } else {
-            el.innerHTML=`
-      <button class="ntab" onclick="nav('home')">Главная</button>
-      <button class="ntab" onclick="nav('login')">Войти</button>
-      <button class="ntab primary" onclick="nav('register')">Регистрация</button>
-      <a class="ntab tg" href="https://t.me/" target="_blank">
-        <svg style="width:14px;height:14px;fill:#29B6F6" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.012 9.485c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.736z"/></svg>
-        Telegram
-      </a>`;
+            el.innerHTML = `
+      <button class="ntab" onclick="goPage('home')">Главная</button>
+      <button class="ntab" onclick="goPage('login')">Войти</button>
+      <button class="ntab primary" onclick="goPage('register')">Регистрация</button>
+      <a class="ntab tg" href="https://t.me/baiy_kz" target="_blank">${tg} Telegram</a>`;
         }
     }
 
-    // ─── API ──────────────────────────────────────────────
-    async function api(path,method='GET',body=null){
-        const o={method,headers:{'Content-Type':'application/json'}};
-        if(TOKEN) o.headers['Authorization']='Bearer '+TOKEN;
-        if(body)  o.body=JSON.stringify(body);
-        const r=await fetch(API+path,o);
-        let d={}; try{ d=await r.json(); }catch{}
-        if(!r.ok) throw new Error(d.message||d.error||'Ошибка '+r.status);
-        return d;
+    function dtab(name) {
+        ['ov','ac','tx','bg','ct','cl','pr'].forEach(t => {
+            const d = document.getElementById('dt-'+t);
+            const s = document.getElementById('sn-'+t);
+            if (d) d.style.display = t===name ? '' : 'none';
+            if (s) s.classList.toggle('act', t===name);
+        });
     }
 
-    // ─── AUTH ─────────────────────────────────────────────
-    async function doLogin(){
-        hide('le');
-        const email=v('l-email').trim(),pass=v('l-pass');
-        if(!email||!pass) return show('le','Заполните email и пароль');
-        try{
-            const d=await api('/auth/login','POST',{email,password:pass});
-            // AuthResponse: {token, username, email}
-            // Build minimal user object from response
-            const user=d.user||{email:d.email||email, username:d.username, telegram:d.telegram};
-            saveSession(d.token||d.accessToken, user);
-            toast('Добро пожаловать! 👋'); showPg('dash');
-        }catch(e){ show('le',e.message); }
+    async function api(path, method='GET', body=null) {
+        const opts = { method, headers: {'Content-Type':'application/json'} };
+        if (TOKEN) opts.headers['Authorization'] = 'Bearer ' + TOKEN;
+        if (body)  opts.body = JSON.stringify(body);
+        const r = await fetch(API + path, opts);
+        if (r.status === 204) return null;
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.message || data.error || 'HTTP ' + r.status);
+        return data;
     }
 
-    async function doRegister(){
-        hide('re');
-        const fn=v('r-fn').trim(),ln=v('r-ln').trim(),mn=v('r-mn').trim();
-        const em=v('r-em').trim(),pw=v('r-pw'),sl=v('r-sl'),tg=v('r-tg').trim();
-        if(!fn||!ln||!em||!pw) return show('re','Заполните обязательные поля (*)');
-        if(pw.length<6) return show('re','Пароль минимум 6 символов');
-        try{
-            const d=await api('/auth/register','POST',{
-                firstName:fn,lastName:ln,middleName:mn||null,
-                email:em,password:pw,
-                salary:sl?parseFloat(sl):0,
-                telegram:tg||null
-            });
-            const user=d.user||{email:d.email||em,username:d.username,firstName:fn,lastName:ln,telegram:tg||null};
-            saveSession(d.token||d.accessToken,user);
-            toast('Аккаунт создан! 🎉'); showPg('dash');
-            // silently seed default categories
-            setTimeout(seedDefaults,800);
-        }catch(e){ show('re',e.message); }
+    // AUTH
+    async function doLogin() {
+        hideMsg('l-err');
+        const email    = val('l-email').trim();
+        const password = val('l-pass');
+        if (!email || !password) return showMsg('l-err', 'Заполните email и пароль');
+        setBtnLoad('l-btn', true, 'Вход...');
+        try {
+            const data = await api('/auth/login', 'POST', { email, password });
+            saveSession(data);
+            toast('Добро пожаловать, ' + ME.fullName + '! 👋');
+            goPage('dash'); loadAll();
+        } catch(e) { showMsg('l-err', e.message); }
+        finally    { setBtnLoad('l-btn', false, 'Войти →'); }
     }
 
-    function saveSession(token,user){
-        TOKEN=token; USER=user;
-        localStorage.setItem('bw_token',token);
-        localStorage.setItem('bw_user',JSON.stringify(user));
-        fillDash(user); buildNav();
+    async function doRegister() {
+        hideMsg('r-err');
+        const firstName = val('r-fn').trim();
+        const lastName  = val('r-ln').trim();
+        const email     = val('r-em').trim();
+        const password  = val('r-pw');
+        if (!firstName)          return showMsg('r-err', 'Введите имя');
+        if (!lastName)           return showMsg('r-err', 'Введите фамилию');
+        if (!email)              return showMsg('r-err', 'Введите email');
+        if (password.length < 6) return showMsg('r-err', 'Пароль — минимум 6 символов');
+        setBtnLoad('r-btn', true, 'Создание...');
+        try {
+            const data = await api('/auth/register', 'POST', { firstName, lastName, email, password });
+            saveSession(data);
+            toast('Аккаунт создан! Добро пожаловать 🎉');
+            goPage('dash'); loadAll();
+        } catch(e) { showMsg('r-err', e.message); }
+        finally    { setBtnLoad('r-btn', false, 'Создать аккаунт →'); }
     }
 
-    function doLogout(){
-        TOKEN=null; USER=null; CATS=[];
-        localStorage.removeItem('bw_token'); localStorage.removeItem('bw_user');
-        buildNav(); showPg('home'); toast('Вы вышли из аккаунта');
+    function saveSession(data) {
+        TOKEN = data.token;
+        const u = data.user || {};
+        ME = {
+            token: data.token,
+            fullName: u.firstName ? (u.lastName + ' ' + u.firstName) : (data.username || data.email),
+            email: u.email || data.email
+        };
+        localStorage.setItem('bw_tok', TOKEN);
+        localStorage.setItem('bw_me',  JSON.stringify(ME));
+        fillSidebar(ME);
+        buildNav();
     }
 
-    // ─── OVERVIEW ─────────────────────────────────────────
-    function fillDash(u){
-        if(!u) return;
-        const fio=[u.lastName,u.firstName,u.middleName].filter(Boolean).join(' ')||u.username||'';
-        const first=u.firstName||u.username||u.email?.split('@')[0]||'Привет';
-        const av=(u.lastName&&u.firstName)?(u.lastName[0]+u.firstName[0]).toUpperCase():first[0].toUpperCase();
-        set('sb-av',av); set('sb-nm',fio||first); set('sb-em',u.email||'');
-        set('d-greet','Привет, '+first+'!');
-        set('d-fio',fio||first); set('d-email',u.email||'');
-        set('d-tg',u.telegram||'Не указан'); set('d-tg2',u.telegram||'Не указан');
-        if(u.createdAt){ set('d-reg',new Date(u.createdAt).toLocaleDateString('ru-RU')); set('d-since',Math.floor((Date.now()-new Date(u.createdAt))/86400000)+' дн.'); }
-        loadBalance();
+    function fillSidebar(me) {
+        if (!me) return;
+        const parts = (me.fullName || '??').split(' ');
+        const ini = (parts[0]?.[0] || '') + (parts[1]?.[0] || '');
+        setText('sb-av', ini.toUpperCase() || '?');
+        setText('sb-nm', me.fullName || '—');
+        setText('sb-em', me.email    || '—');
+        setText('pr-nm', me.fullName || '—');
+        setText('pr-em', me.email    || '—');
+        setText('ov-greet', 'Привет, ' + (me.fullName?.split(' ')[1] || me.fullName || '') + '!');
     }
 
-    async function loadBalance(){
-        try{
-            const r=await api('/accounts');
-            const l=Array.isArray(r)?r:[];
-            set('d-balance',l.reduce((s,a)=>s+(parseFloat(a.balance)||0),0).toLocaleString('ru-RU')+' ₸');
-        }catch{ set('d-balance','—'); }
+    function doLogout() {
+        TOKEN=null; ME=null; ACCOUNTS=[]; TXNS=[]; CATS=[]; BUDGETS=[];
+        localStorage.removeItem('bw_tok'); localStorage.removeItem('bw_me');
+        buildNav(); goPage('home'); toast('Вы вышли из аккаунта');
     }
 
-    // ─── ACCOUNTS ─────────────────────────────────────────
-    async function loadAccounts(){
-        const el=document.getElementById('ac-list'); if(!el) return;
-        el.innerHTML='<div class="shimmer" style="margin:12px"></div>';
-        try{
-            const r=await api('/accounts');
-            const l=Array.isArray(r)?r:[];
-            if(!l.length){ el.innerHTML='<div style="padding:20px 16px;font-size:13px;color:var(--TX3)">Нет счетов — создайте первый!</div>'; return; }
-            el.innerHTML=l.map(a=>`
-      <div class="tw-row">
-        <div style="font-weight:600">${esc(a.name)}</div>
-        <div style="color:var(--TX2)">${esc(a.type||'—')}</div>
-        <div style="color:var(--G1);font-weight:700">${fmt(a.balance)} ₸</div>
-        <div><button class="del-btn" onclick="delAccount(${a.id})">✕</button></div>
-      </div>`).join('');
-        }catch(e){ el.innerHTML=`<div style="padding:16px;color:var(--RED);font-size:13px">${esc(e.message)}</div>`; }
+    // LOAD ALL
+    async function loadAll() {
+        await Promise.allSettled([loadAccounts(), loadCategories(), loadTransactions(), loadBudgets()]);
+        renderOverview();
     }
 
-    async function addAccount(){
-        hide('ace');
-        const name=v('ac-name').trim(),type=v('ac-type'),bal=v('ac-bal');
-        if(!name) return show('ace','Введите название счёта');
-        try{
-            await api('/accounts','POST',{name,type,balance:bal?parseFloat(bal):0,currency:'KZT'});
-            sv('ac-name',''); sv('ac-bal','0');
-            toast('Счёт создан!'); loadAccounts(); loadBalance();
-        }catch(e){ show('ace',e.message); }
+    // ACCOUNTS
+    async function loadAccounts() {
+        try { ACCOUNTS = await api('/accounts') || []; renderAccounts(); fillAccSelect(); }
+        catch(e) { console.warn('accounts:', e.message); }
+    }
+    function renderAccounts() {
+        const el = document.getElementById('ac-list');
+        if (!el) return;
+        if (!ACCOUNTS.length) { el.innerHTML = '<div class="empty">Нет счетов — создайте первый!</div>'; return; }
+        el.innerHTML = ACCOUNTS.map(a => `
+    <div class="tw-r g4">
+      <div style="font-weight:500">${esc(a.name)}</div>
+      <div><span class="badge ba">${esc(a.type||'—')}</span></div>
+      <div style="color:var(--G1);font-weight:600">${fmt(a.balance)} ₸</div>
+      <div></div>
+    </div>`).join('');
+    }
+    function fillAccSelect() {
+        const s = document.getElementById('tx-acc');
+        if (!s) return;
+        s.innerHTML = '<option value="">— выберите счёт —</option>' +
+            ACCOUNTS.map(a => `<option value="${a.id}">${esc(a.name)} (${fmt(a.balance)} ₸)</option>`).join('');
+    }
+    async function createAccount() {
+        hideMsg('ac-err');
+        const name    = val('ac-name').trim();
+        const type    = val('ac-type');
+        const balance = parseFloat(val('ac-bal')) || 0;
+        if (!name) return showMsg('ac-err', 'Введите название счёта');
+        try {
+            const acc = await api('/accounts', 'POST', { name, type, balance });
+            ACCOUNTS.push(acc); renderAccounts(); fillAccSelect(); renderOverview();
+            setVal('ac-name',''); setVal('ac-bal','');
+            toast('Счёт «' + acc.name + '» создан!');
+        } catch(e) { showMsg('ac-err', e.message); }
     }
 
-    async function delAccount(id){
-        if(!confirm('Удалить счёт?')) return;
-        try{ await api('/accounts/'+id,'DELETE'); toast('Счёт удалён'); loadAccounts(); loadBalance(); }
-        catch(e){ toast(e.message,true); }
+    // CATEGORIES
+    async function loadCategories() {
+        try {
+            CATS = await api('/categories') || [];
+            renderCategories(); fillCatSelects();
+            if (CATS.length === 0) await seedDefaultCategories();
+        } catch(e) { console.warn('categories:', e.message); }
+    }
+    function renderCategories() {
+        const el = document.getElementById('ct-grid');
+        if (!el) return;
+        if (!CATS.length) { el.innerHTML = '<div class="empty">Нет категорий</div>'; return; }
+        el.innerHTML = CATS.map(c => `
+    <div style="background:var(--CARD);border:1px solid var(--B1);border-radius:12px;padding:16px;text-align:center">
+      <div style="font-size:26px;margin-bottom:8px">${esc(c.icon||'📦')}</div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:5px">${esc(c.name)}</div>
+      <span class="badge ${c.type==='INCOME'?'bg':'br'}">${c.type==='INCOME'?'Доход':'Расход'}</span>
+    </div>`).join('');
+    }
+    function fillCatSelects() {
+        const txSel = document.getElementById('tx-cat');
+        const bgSel = document.getElementById('bg-cat');
+        const allOpts = '<option value="">— без категории —</option>' +
+            CATS.map(c => `<option value="${c.id}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('');
+        const expOpts = '<option value="">— выберите —</option>' +
+            CATS.filter(c=>c.type==='EXPENSE').map(c => `<option value="${c.id}">${esc(c.icon||'')} ${esc(c.name)}</option>`).join('');
+        if (txSel) txSel.innerHTML = allOpts;
+        if (bgSel) bgSel.innerHTML = expOpts;
+    }
+    async function createCategory() {
+        hideMsg('ct-err');
+        const name  = val('ct-name').trim();
+        const type  = val('ct-type');
+        const icon  = val('ct-icon').trim()  || '📦';
+        const color = val('ct-color').trim() || '#00FF7F';
+        if (!name) return showMsg('ct-err', 'Введите название категории');
+        try {
+            const cat = await api('/categories', 'POST', { name, type, icon, color });
+            CATS.push(cat); renderCategories(); fillCatSelects();
+            setVal('ct-name',''); setVal('ct-icon',''); setVal('ct-color','');
+            toast('Категория «' + cat.name + '» добавлена!');
+        } catch(e) { showMsg('ct-err', e.message); }
     }
 
-    // ─── CATEGORIES ───────────────────────────────────────
-    async function fetchCats(){
-        try{ const r=await api('/categories'); CATS=Array.isArray(r)?r:(r?[r]:[]); }
-        catch{ CATS=[]; }
+    // TRANSACTIONS
+    async function loadTransactions() {
+        try { TXNS = await api('/transactions') || []; renderTransactions(); }
+        catch(e) { console.warn('transactions:', e.message); }
     }
-
-    async function loadCats(render=false){
-        await fetchCats();
-        if(!render) return;
-        const exp=CATS.filter(c=>c.type==='EXPENSE');
-        const inc=CATS.filter(c=>c.type==='INCOME');
-        renderManagePills('ca-expense',exp);
-        renderManagePills('ca-income',inc);
+    function renderTransactions() {
+        const el = document.getElementById('tx-list');
+        if (!el) return;
+        if (!TXNS.length) { el.innerHTML = '<div class="empty">Нет транзакций — добавьте первую!</div>'; return; }
+        const sorted = [...TXNS].sort((a,b) => String(b.date||'').localeCompare(String(a.date||'')));
+        el.innerHTML = sorted.map(t => {
+            const inc  = t.type === 'INCOME';
+            const desc = t.description || (t.category ? t.category.name : '—');
+            return `<div class="tw-r g5">
+      <div>
+        <div style="font-weight:500">${esc(desc)}</div>
+        ${t.category ? `<div style="font-size:11px;color:var(--TX3);margin-top:2px">${t.category.icon||''} ${esc(t.category.name)}</div>` : ''}
+      </div>
+      <div style="color:var(--TX3)">${t.date||'—'}</div>
+      <div><span class="badge ${inc?'bg':'br'}">${inc?'Доход':'Расход'}</span></div>
+      <div style="color:${inc?'var(--G1)':'var(--RED)'};font-weight:600">${inc?'+':'-'}${fmt(t.amount)} ₸</div>
+      <div><button class="del-btn" onclick="deleteTx(${t.id})">✕</button></div>
+    </div>`;
+        }).join('');
     }
-
-    function renderManagePills(elId,list){
-        const el=document.getElementById(elId); if(!el) return;
-        if(!list.length){ el.innerHTML='<span class="empty-hint">Нет категорий — нажмите «⚡ Загрузить стандартные»</span>'; return; }
-        el.innerHTML=list.map(c=>`
-    <span class="cat-pill">
-      <span>${esc(c.icon||'📁')}</span>
-      <span>${esc(c.name)}</span>
-      <span class="px" onclick="event.stopPropagation();delCategory(${c.id})">✕</span>
-    </span>`).join('');
-    }
-
-    // selectable pills for transactions
-    function fillTxPills(){
-        const type=v('tx-type')||'EXPENSE';
-        const el=document.getElementById('tx-cat-pills'); if(!el) return;
-        const sel=parseInt(document.getElementById('tx-cat-id')?.value||'0');
-        const list=CATS.filter(c=>c.type===type);
-        if(!list.length){ el.innerHTML='<span class="empty-hint">Нет категорий — добавьте в разделе «Категории»</span>'; return; }
-        el.innerHTML=list.map(c=>`
-    <span class="cat-pill${c.id===sel?' sel':''}" onclick="pickTxCat(${c.id},this)">
-      ${esc(c.icon||'📁')} ${esc(c.name)}
-    </span>`).join('');
-    }
-    function onTxTypeChange(){ document.getElementById('tx-cat-id').value=''; fillTxPills(); }
-    function pickTxCat(id,el){
-        document.querySelectorAll('#tx-cat-pills .cat-pill').forEach(p=>p.classList.remove('sel'));
-        el.classList.add('sel'); document.getElementById('tx-cat-id').value=id;
-    }
-
-    // selectable pills for budgets (expense only)
-    function fillBuPills(){
-        const el=document.getElementById('bu-cat-pills'); if(!el) return;
-        const sel=parseInt(document.getElementById('bu-cat-id')?.value||'0');
-        const list=CATS.filter(c=>c.type==='EXPENSE');
-        if(!list.length){ el.innerHTML='<span class="empty-hint">Нет категорий расходов — добавьте сначала</span>'; return; }
-        el.innerHTML=list.map(c=>`
-    <span class="cat-pill${c.id===sel?' sel':''}" onclick="pickBuCat(${c.id},this)">
-      ${esc(c.icon||'📁')} ${esc(c.name)}
-    </span>`).join('');
-    }
-    function pickBuCat(id,el){
-        document.querySelectorAll('#bu-cat-pills .cat-pill').forEach(p=>p.classList.remove('sel'));
-        el.classList.add('sel'); document.getElementById('bu-cat-id').value=id;
-    }
-
-    async function addCategory(){
-        hide('cae');
-        const name=v('ca-name').trim(),type=v('ca-type');
-        const icon=v('ca-icon').trim()||'📁',color=v('ca-color').trim()||'#00FF7F';
-        if(!name) return show('cae','Введите название категории');
-        try{
-            await api('/categories','POST',{name,type,icon,color});
-            sv('ca-name',''); sv('ca-icon',''); sv('ca-color','');
-            toast('Категория добавлена!'); await loadCats(true);
-        }catch(e){ show('cae',e.message); }
-    }
-
-    async function delCategory(id){
-        if(!confirm('Удалить категорию?')) return;
-        try{ await api('/categories/'+id,'DELETE'); toast('Удалено'); await loadCats(true); }
-        catch(e){ toast(e.message,true); }
-    }
-
-    async function loadDefaultCategories(btn){
-        btn.textContent='⏳ Загрузка...'; btn.disabled=true;
-        let ok=0,skip=0;
-        for(const c of DEFAULTS){ try{ await api('/categories','POST',c); ok++; }catch{ skip++; } }
-        btn.textContent='⚡ Загрузить стандартные (12 шт)'; btn.disabled=false;
-        toast(ok?`Добавлено: ${ok}${skip?' (уже было: '+skip+')':''}`:'Все категории уже загружены');
-        await loadCats(true);
-    }
-
-    async function seedDefaults(){
-        for(const c of DEFAULTS){ try{ await api('/categories','POST',c); }catch{} }
-    }
-
-    // ─── TRANSACTIONS ─────────────────────────────────────
-    async function fillAccSel(){
-        const sel=document.getElementById('tx-acc'); if(!sel) return;
-        try{
-            const r=await api('/accounts');
-            const l=Array.isArray(r)?r:[];
-            sel.innerHTML='<option value="">— выберите счёт —</option>'+
-                l.map(a=>`<option value="${a.id}">${esc(a.name)} — ${fmt(a.balance)} ₸</option>`).join('');
-        }catch{ sel.innerHTML='<option value="">Ошибка загрузки счетов</option>'; }
-    }
-
-    async function loadTransactions(){
-        const el=document.getElementById('tx-list'); if(!el) return;
-        el.innerHTML='<div class="shimmer" style="margin:12px"></div>';
-        try{
-            const r=await api('/transactions');
-            const l=Array.isArray(r)?r:[];
-            if(!l.length){ el.innerHTML='<div style="padding:20px 16px;font-size:13px;color:var(--TX3)">Нет транзакций — добавьте первую!</div>'; return; }
-            el.innerHTML=l.map(t=>`
-      <div class="tw-row">
-        <div style="font-weight:500">${esc(t.description||'—')}</div>
-        <div style="font-size:12px;color:var(--TX3)">${t.date||'—'}</div>
-        <div><span class="type-badge ${t.type}">${t.type==='INCOME'?'Доход':'Расход'}</span></div>
-        <div style="font-weight:700;color:${t.type==='INCOME'?'var(--G1)':'var(--RED)'}">
-          ${t.type==='INCOME'?'+':'-'}${fmt(t.amount)} ₸
-        </div>
-        <div><button class="del-btn" onclick="delTx(${t.id})">✕</button></div>
-      </div>`).join('');
-        }catch(e){ el.innerHTML=`<div style="padding:16px;color:var(--RED);font-size:13px">${esc(e.message)}</div>`; }
-    }
-
-    async function addTx(){
-        const accId=v('tx-acc'),catId=v('tx-cat-id');
-        const desc=v('tx-desc').trim(),amt=parseFloat(v('tx-amt'));
-        const type=v('tx-type'),date=v('tx-date');
-        if(!accId) return toast('Выберите счёт',true);
-        if(!desc||!amt||amt<=0) return toast('Введите описание и сумму',true);
-        try{
-            await api('/transactions','POST',{
-                accountId:parseInt(accId),
-                categoryId:catId?parseInt(catId):null,
-                description:desc,amount:amt,type,
-                date:date||null
-            });
-            sv('tx-desc',''); sv('tx-amt','');
-            document.getElementById('tx-cat-id').value='';
-            document.querySelectorAll('#tx-cat-pills .cat-pill').forEach(p=>p.classList.remove('sel'));
+    async function createTransaction() {
+        hideMsg('tx-err');
+        const amount    = parseFloat(val('tx-amt'));
+        const type      = val('tx-type');
+        const accountId = val('tx-acc');
+        const catId     = val('tx-cat');
+        const desc      = val('tx-desc').trim();
+        const date      = val('tx-date');
+        if (!amount || amount <= 0) return showMsg('tx-err', 'Введите сумму больше нуля');
+        if (!accountId)             return showMsg('tx-err', 'Выберите счёт');
+        try {
+            const body = { amount, type, accountId: +accountId, description: desc||null, date: date||null };
+            if (catId) body.categoryId = +catId;
+            const tx = await api('/transactions', 'POST', body);
+            TXNS.unshift(tx);
+            const acc = ACCOUNTS.find(a => a.id === +accountId);
+            if (acc) acc.balance = type==='INCOME' ? +acc.balance+amount : +acc.balance-amount;
+            renderTransactions(); renderAccounts(); fillAccSelect(); renderOverview();
+            setVal('tx-amt',''); setVal('tx-desc','');
             toast('Транзакция добавлена!');
-            loadTransactions(); loadBalance(); fillAccSel();
-        }catch(e){ toast(e.message,true); }
+        } catch(e) { showMsg('tx-err', e.message); }
+    }
+    async function deleteTx(id) {
+        try {
+            await api('/transactions/'+id, 'DELETE');
+            TXNS = TXNS.filter(t => t.id !== id);
+            renderTransactions(); renderOverview();
+            toast('Удалено');
+        } catch(e) { toast(e.message,'e'); }
     }
 
-    async function delTx(id){
-        if(!confirm('Удалить транзакцию?')) return;
-        try{ await api('/transactions/'+id,'DELETE'); toast('Удалено'); loadTransactions(); loadBalance(); }
-        catch(e){ toast(e.message,true); }
+    // BUDGETS
+    async function loadBudgets() {
+        try { BUDGETS = await api('/budgets') || []; renderBudgets(); }
+        catch(e) { console.warn('budgets:', e.message); }
     }
-
-    // ─── BUDGETS ──────────────────────────────────────────
-    async function loadBudgets(){
-        const el=document.getElementById('bu-list'); if(!el) return;
-        el.innerHTML='<div class="shimmer" style="margin:12px"></div>';
-        try{
-            const r=await api('/budgets');
-            const l=Array.isArray(r)?r:[];
-            if(!l.length){ el.innerHTML='<div style="padding:20px 16px;font-size:13px;color:var(--TX3)">Нет бюджетов — создайте первый!</div>'; return; }
-            el.innerHTML=l.map(b=>{
-                const lim=parseFloat(b.limitAmount)||0, spt=parseFloat(b.spentAmount)||0;
-                const pct=lim>0?Math.min(100,Math.round(spt/lim*100)):0;
-                const col=pct>=90?'var(--RED)':pct>=70?'var(--AMBER)':'var(--G1)';
-                const per={MONTH:'Месяц',WEEK:'Неделя',YEAR:'Год'}[b.period]||b.period||'—';
-                return `
-      <div class="tw-row">
-        <div>
-          <div style="font-weight:600">${esc(b.category?.icon||'📁')} ${esc(b.category?.name||'—')}</div>
-          <div style="font-size:11px;color:var(--TX3);margin-top:2px">${per}</div>
+    function renderBudgets() {
+        const el = document.getElementById('bg-list');
+        if (!el) return;
+        if (!BUDGETS.length) { el.innerHTML = '<div class="empty">Нет бюджетов — создайте первый!</div>'; return; }
+        el.innerHTML = BUDGETS.map(b => {
+            const pct = +b.limitAmount > 0 ? Math.min(100, Math.round((+b.spentAmount / +b.limitAmount)*100)) : 0;
+            const col = pct >= 90 ? 'var(--RED)' : pct >= 70 ? 'var(--AMBER)' : 'var(--G1)';
+            return `<div class="tw-r g5b">
+      <div>
+        <div style="font-weight:500">${b.category ? esc(b.category.name) : '—'}</div>
+        <div style="background:var(--BG3);border-radius:4px;height:4px;margin-top:6px;overflow:hidden">
+          <div style="width:${pct}%;height:100%;background:${col};border-radius:4px"></div>
         </div>
-        <div style="color:var(--TX2)">${fmt(b.limitAmount)} ₸</div>
-        <div style="color:${col};font-weight:600">${fmt(b.spentAmount)} ₸</div>
-        <div>
-          <div style="font-size:11px;color:${col};margin-bottom:4px;text-align:right">${pct}%</div>
-          <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%;background:${col}"></div></div>
-        </div>
-        <div><button class="del-btn" onclick="delBudget(${b.id})">✕</button></div>
-      </div>`; }).join('');
-        }catch(e){ el.innerHTML=`<div style="padding:16px;color:var(--RED);font-size:13px">${esc(e.message)}</div>`; }
+        <div style="font-size:11px;color:var(--TX3);margin-top:3px">${pct}% использовано</div>
+      </div>
+      <div style="color:var(--G1);font-weight:600">${fmt(b.limitAmount)} ₸</div>
+      <div style="color:${pct>=90?'var(--RED)':'var(--TX)'}">${fmt(b.spentAmount)} ₸</div>
+      <div><span class="badge ba">${esc(b.period||'—')}</span></div>
+      <div><button class="del-btn" onclick="deleteBudget(${b.id})">✕</button></div>
+    </div>`;
+        }).join('');
+    }
+    async function createBudget() {
+        hideMsg('bg-err');
+        const catId       = val('bg-cat');
+        const limitAmount = parseFloat(val('bg-lmt'));
+        const period      = val('bg-period');
+        if (!catId)                          return showMsg('bg-err', 'Выберите категорию');
+        if (!limitAmount || limitAmount <= 0) return showMsg('bg-err', 'Введите лимит больше нуля');
+        try {
+            const b = await api('/budgets', 'POST', { categoryId: +catId, limitAmount, period });
+            BUDGETS.push(b); renderBudgets(); renderOverview();
+            setVal('bg-lmt','');
+            toast('Бюджет создан!');
+        } catch(e) { showMsg('bg-err', e.message); }
+    }
+    async function deleteBudget(id) {
+        try {
+            await api('/budgets/'+id, 'DELETE');
+            BUDGETS = BUDGETS.filter(b => b.id !== id);
+            renderBudgets(); renderOverview();
+            toast('Бюджет удалён');
+        } catch(e) { toast(e.message,'e'); }
     }
 
-    async function addBudget(){
-        hide('bue');
-        const catId=v('bu-cat-id'),lim=parseFloat(v('bu-lim')),per=v('bu-per');
-        if(!catId) return show('bue','Выберите категорию — нажмите на пилюлю выше');
-        if(!lim||lim<=0) return show('bue','Введите лимит больше 0');
-        try{
-            await api('/budgets','POST',{categoryId:parseInt(catId),limitAmount:lim,period:per});
-            sv('bu-lim','');
-            document.getElementById('bu-cat-id').value='';
-            document.querySelectorAll('#bu-cat-pills .cat-pill').forEach(p=>p.classList.remove('sel'));
-            toast('Бюджет создан!'); loadBudgets();
-        }catch(e){ show('bue',e.message); }
+    // OVERVIEW
+    function renderOverview() {
+        const now  = new Date();
+        const curM = now.getMonth();
+        const curY = now.getFullYear();
+        setText('ov-month-name', now.toLocaleString('ru-RU',{month:'long',year:'numeric'}));
+        setText('ov-year-name', String(curY));
+        const bal = ACCOUNTS.reduce((s,a) => s+(+a.balance||0), 0);
+        setText('ov-bal', '₸ '+fmt(bal));
+        setText('ov-acc', ACCOUNTS.length);
+        setText('ov-txn', TXNS.length);
+        setText('ov-bud', BUDGETS.length);
+        const thisMonth = TXNS.filter(t => { if(!t.date) return false; const d=new Date(t.date); return d.getMonth()===curM && d.getFullYear()===curY; });
+        const incM = thisMonth.filter(t=>t.type==='INCOME').reduce((s,t)=>s+(+t.amount||0),0);
+        const expM = thisMonth.filter(t=>t.type==='EXPENSE').reduce((s,t)=>s+(+t.amount||0),0);
+        const netM = incM - expM;
+        setText('ov-inc-m', '₸ '+fmt(incM));
+        setText('ov-exp-m', '₸ '+fmt(expM));
+        const netEl = document.getElementById('ov-net-m');
+        if (netEl) { netEl.textContent=(netM>=0?'+':'')+fmt(netM)+' ₸'; netEl.style.color=netM>=0?'var(--G1)':'var(--RED)'; }
+        const thisYear = TXNS.filter(t => t.date && new Date(t.date).getFullYear()===curY);
+        setText('ov-inc-y', '₸ '+fmt(thisYear.filter(t=>t.type==='INCOME').reduce((s,t)=>s+(+t.amount||0),0)));
+        setText('ov-exp-y', '₸ '+fmt(thisYear.filter(t=>t.type==='EXPENSE').reduce((s,t)=>s+(+t.amount||0),0)));
+        const catMap = {};
+        TXNS.filter(t=>t.type==='EXPENSE').forEach(t => {
+            const name = t.category ? t.category.name : 'Без категории';
+            const icon = t.category ? (t.category.icon||'📦') : '📦';
+            if (!catMap[name]) catMap[name] = { icon, total: 0 };
+            catMap[name].total += (+t.amount||0);
+        });
+        const catArr = Object.entries(catMap).sort((a,b) => b[1].total - a[1].total);
+        const maxVal = catArr[0]?.[1].total || 1;
+        const chartEl = document.getElementById('ov-cats-chart');
+        if (chartEl) {
+            if (!catArr.length) { chartEl.innerHTML = '<div class="empty">Нет расходов для анализа</div>'; }
+            else {
+                chartEl.innerHTML = catArr.map(([name, data]) => {
+                    const pct = Math.round((data.total/maxVal)*100);
+                    return `<div style="display:grid;grid-template-columns:26px 1fr 110px;gap:10px;align-items:center;margin-bottom:10px">
+          <div style="font-size:18px;text-align:center">${data.icon}</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;margin-bottom:5px">${esc(name)}</div>
+            <div style="background:var(--BG3);border-radius:4px;height:6px;overflow:hidden">
+              <div style="width:${pct}%;height:100%;background:var(--G3);border-radius:4px"></div>
+            </div>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:var(--RED);text-align:right">-${fmt(data.total)} ₸</div>
+        </div>`;
+                }).join('');
+            }
+        }
     }
 
-    async function delBudget(id){
-        if(!confirm('Удалить бюджет?')) return;
-        try{ await api('/budgets/'+id,'DELETE'); toast('Удалено'); loadBudgets(); }
-        catch(e){ toast(e.message,true); }
+    // SEED DEFAULT CATEGORIES
+    async function seedDefaultCategories() {
+        if (CATS.length > 0) return;
+        const defaults = [
+            {name:'Рестораны',type:'EXPENSE',icon:'🍽',color:'#FFB82E'},
+            {name:'Продукты',type:'EXPENSE',icon:'🛒',color:'#00C45E'},
+            {name:'Развлечения',type:'EXPENSE',icon:'🎮',color:'#a78bfa'},
+            {name:'Транспорт',type:'EXPENSE',icon:'🚌',color:'#29B6F6'},
+            {name:'Здоровье',type:'EXPENSE',icon:'💊',color:'#FF4D6D'},
+            {name:'Одежда',type:'EXPENSE',icon:'👕',color:'#fb923c'},
+            {name:'Коммунальные',type:'EXPENSE',icon:'🏠',color:'#94a3b8'},
+            {name:'Зарплата',type:'INCOME',icon:'💰',color:'#00FF7F'},
+            {name:'Фриланс',type:'INCOME',icon:'💻',color:'#00E56F'},
+            {name:'Подарки',type:'INCOME',icon:'🎁',color:'#f472b6'},
+        ];
+        for (const cat of defaults) {
+            try { const c = await api('/categories','POST',cat); CATS.push(c); } catch(e) {}
+        }
+        renderCategories(); fillCatSelects();
+        toast('Добавлены стандартные категории 🏷');
     }
 
-    // ─── PROFILE ──────────────────────────────────────────
-    function fillProfileForm(u){
-        if(!u) return;
-        sv('p-fn',u.firstName||''); sv('p-ln',u.lastName||'');
-        sv('p-mn',u.middleName||''); sv('p-sl',u.salary||''); sv('p-tg',u.telegram||'');
-        set('p-email-ro',u.email||'');
-        const h=(u.telegram||'').replace('@','');
-        const a=document.getElementById('tg-link-prof');
-        if(a) a.href=h?'https://t.me/'+h:'https://t.me/';
+    // CALCULATOR
+    function calcUpd() {
+        const P = parseFloat(document.getElementById('cl-p')?.value) || 0;
+        const c = parseFloat(document.getElementById('cl-c')?.value) || 0;
+        const r = (parseFloat(document.getElementById('cl-r')?.value) || 12) / 100 / 12;
+        const n = (parseFloat(document.getElementById('cl-y')?.value) || 10) * 12;
+        if (r <= 0 || n <= 0) return;
+        const total    = P * Math.pow(1+r,n) + c * (Math.pow(1+r,n)-1) / r;
+        const invested = P + c * n;
+        const profit   = total - invested;
+        setText('cl-res', fmt(Math.round(total)) + ' ₸');
+        setText('cl-sub', 'Вложено: '+fmt(Math.round(invested))+' ₸  ·  Прибыль: +'+fmt(Math.round(profit))+' ₸  ('+Math.round((profit/Math.max(invested,1))*100)+'%)');
     }
 
-    async function saveProfile(){
-        hide('pe'); hide('po');
-        const fn=v('p-fn').trim(),ln=v('p-ln').trim();
-        if(!fn||!ln) return show('pe','Имя и фамилия обязательны');
-        const mn=v('p-mn').trim(),sl=v('p-sl'),tg=v('p-tg').trim();
-        try{
-            const upd=await api('/users/profile','PUT',{firstName:fn,lastName:ln,middleName:mn||null,salary:sl?parseFloat(sl):0,telegram:tg||null});
-            USER={...USER,...upd};
-            localStorage.setItem('bw_user',JSON.stringify(USER));
-            fillDash(USER); buildNav();
-            show('po','✓ Данные обновлены!'); toast('Профиль сохранён!');
-        }catch(e){ show('pe',e.message); }
-    }
-
-    // ─── CALCULATOR ───────────────────────────────────────
-    function calcUpd(){
-        const P=parseFloat(document.getElementById('c-p')?.value)||500000;
-        const c=parseFloat(document.getElementById('c-c')?.value)||50000;
-        const r=(parseFloat(document.getElementById('c-r')?.value)||12)/100/12;
-        const n=(parseFloat(document.getElementById('c-y')?.value)||10)*12;
-        const total=P*Math.pow(1+r,n)+c*(Math.pow(1+r,n)-1)/r;
-        const inv=P+c*n, prof=total-inv;
-        const re=document.getElementById('c-res'),rs=document.getElementById('c-sub');
-        if(re) re.textContent=Math.round(total).toLocaleString('ru-RU')+' ₸';
-        if(rs) rs.textContent='Вложено: '+Math.round(inv).toLocaleString('ru-RU')+' ₸  ·  Прибыль: +'+Math.round(prof).toLocaleString('ru-RU')+' ₸  ('+Math.round(prof/inv*100)+'%)';
-    }
-
-    // ─── HELPERS ──────────────────────────────────────────
-    const v  =id=>(document.getElementById(id)||{}).value||'';
-    const sv =(id,val)=>{ const e=document.getElementById(id); if(e) e.value=val; };
-    const set=(id,val)=>{ const e=document.getElementById(id); if(e) e.textContent=val; };
-    const fmt=n=>(parseFloat(n)||0).toLocaleString('ru-RU');
-    const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    function show(id,m){ const e=document.getElementById(id); if(e){e.textContent=m;e.classList.add('show');} }
-    function hide(id)  { const e=document.getElementById(id); if(e) e.classList.remove('show'); }
+    // UI HELPERS
+    const val     = id  => (document.getElementById(id)||{}).value || '';
+    const setVal  = (id,v) => { const e=document.getElementById(id); if(e) e.value=v; };
+    const setText = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+    const fmt     = n   => (+n||0).toLocaleString('ru-RU',{minimumFractionDigits:0,maximumFractionDigits:2});
+    const esc     = s   => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    function setBtnLoad(id,on,txt){const b=document.getElementById(id);if(!b)return;b.disabled=on;if(txt)b.textContent=txt;}
+    function showMsg(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show');}}
+    function hideMsg(id){const e=document.getElementById(id);if(e)e.classList.remove('show');}
     let _tt;
-    function toast(m,err=false){
+    function toast(msg,type=''){
         const t=document.getElementById('toast');
-        t.textContent=m; t.className='toast'+(err?' terr':'')+' show';
-        clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),3500);
+        t.textContent=msg;
+        t.className='toast'+(type==='e'?' terr':'')+' show';
+        clearTimeout(_tt);
+        _tt=setTimeout(()=>t.classList.remove('show'),3200);
     }
 </script>
 </body>

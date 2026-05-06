@@ -1,5 +1,6 @@
 package kz.kopbolsyn.baiy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -22,9 +23,11 @@ public class Category {
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Transaction> transactions;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Budget> budgets;
 
